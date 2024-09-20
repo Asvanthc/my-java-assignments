@@ -4,7 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.Socket;
-
+//used in both peers
 public class MessageReceiver implements Runnable {
     private final Socket socket;
 
