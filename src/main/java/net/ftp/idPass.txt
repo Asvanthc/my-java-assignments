@@ -1,3 +1,0 @@
-shoaib123 password123
-user456 pass456
-admin789 admin123
