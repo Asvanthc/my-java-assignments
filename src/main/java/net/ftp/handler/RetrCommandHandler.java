@@ -21,11 +21,13 @@ public class RetrCommandHandler implements Command {
 
     private final String fileName;
     private final OutputStream out;
+    private SessionState sessionState;
 
     // Constructor to accept the file name and output stream
-    public RetrCommandHandler(String fileName, OutputStream out) {
+    public RetrCommandHandler(String fileName, OutputStream out, SessionState sessionState) {
         this.fileName = fileName;
         this.out = out;
+        this.sessionState=sessionState;
     }
 
     @Override
@@ -33,7 +35,7 @@ public class RetrCommandHandler implements Command {
         if (fileName == null || fileName.trim().isEmpty()) {
             return RED + "500 Bad sequence of commands." + RESET + "\r\n";
         }
-        String currentDirectory = SessionState.getInstance().getCurrentDirectory();
+        String currentDirectory = sessionState.getCurrentDirectory();
         File file = new File(currentDirectory, fileName);
         if (!file.exists()) {
             return RED + "404 File not found." + RESET + "\r\n";

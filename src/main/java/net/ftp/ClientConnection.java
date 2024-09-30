@@ -9,10 +9,11 @@ import org.apache.logging.log4j.Logger;
 public class ClientConnection implements Runnable {
     private final Socket clientSocket;
     private static final Logger LOGGER = LogManager.getLogger(ClientConnection.class);
+    private SessionState sessionState; // Each client gets its own SessionState
 
     public ClientConnection(Socket clientSocket) {
         this.clientSocket = clientSocket;
-//        SessionState sessionState = new SessionState(); // Each client gets its own SessionState
+        sessionState=new SessionState();
     }
 
     @Override
@@ -25,9 +26,7 @@ public class ClientConnection implements Runnable {
             while (isConnectionActive) {
                 try {
                     // Read and parse command
-                    CommandParser cp = new CommandParser();
-                    Command cmd = cp.readAndParseCommand(in, out);
-//                    Command cmd = CommandParser.readAndParseCommand(in, out);
+                    Command cmd = CommandParser.getInstance().readAndParseCommand(in, out, sessionState);
                     if (cmd == null) {
                         LOGGER.info("Client closed connection or sent invalid command.");
                         break;

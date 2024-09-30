@@ -1,8 +1,0 @@
-2024-09-12 16:43:11.648 [main] INFO  io.basics.GenericMain - Binary: Person{name='asvanth', age=22, address='cbe'}
-2024-09-12 16:43:11.725 [main] INFO  io.basics.GenericMain - JSON: Person{name='asvanth', age=22, address='cbe'}
-2024-09-12 16:43:11.735 [main] INFO  io.basics.GenericMain - Binary: MyObject{name='BinaryExample', value=100}
-2024-09-12 16:43:11.737 [main] INFO  io.basics.GenericMain - JSON: MyObject{name='BinaryExample', value=100}
-2024-09-12 16:43:18.544 [main] INFO  io.basics.GenericMain - Binary: Person{name='asvanth', age=22, address='cbe'}
-2024-09-12 16:43:18.623 [main] INFO  io.basics.GenericMain - JSON: Person{name='asvanth', age=22, address='cbe'}
-2024-09-12 16:43:18.634 [main] INFO  io.basics.GenericMain - Binary: MyObject{name='BinaryExample', value=100}
-2024-09-12 16:43:18.635 [main] INFO  io.basics.GenericMain - JSON: MyObject{name='BinaryExample', value=100}

@@ -1,18 +1,17 @@
 package net.ftp;
 
+import java.nio.ByteBuffer;
+
 public class SessionState {
 
-    private static final SessionState INSTANCE = new SessionState();
-
     private String currentDirectory;
+    private final ByteBuffer buffer;
+    private final ByteBufferBackedInputStream byteBufferInputStream;
 
-    private SessionState() {
-        // Set a default directory if needed
+    public SessionState() {
         this.currentDirectory = "/home/asvanth/IdeaProjects/my-java-assignments/server_files";
-    }
-
-    public static SessionState getInstance() {
-        return INSTANCE;
+        this.buffer = ByteBuffer.allocate(1024); // Allocate once
+        this.byteBufferInputStream = new ByteBufferBackedInputStream(buffer);  // Create once
     }
 
     public String getCurrentDirectory() {
@@ -22,4 +21,19 @@ public class SessionState {
     public void setCurrentDirectory(String currentDirectory) {
         this.currentDirectory = currentDirectory;
     }
+
+    public ByteBuffer getBuffer() {
+        return buffer;
+    }
+
+    public void resetBuffer() {
+        buffer.clear();  // Reuse the buffer
+    }
+
+    // Reuse the same ByteBufferBackedInputStream instance
+    public ByteBufferBackedInputStream getByteBufferInputStream() {
+        return byteBufferInputStream;
+    }
+
 }
+

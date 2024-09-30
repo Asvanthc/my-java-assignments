@@ -1,8 +1,0 @@
-2024-09-13 17:41:25.583 [main] INFO  io.basics.BinarySerialization - Binary Before Deserialization stored in java.io.ObjectOutputStream@28f2a10f
-2024-09-13 17:41:25.589 [main] INFO  io.basics.GenericMain - Binary: Person{name='asvanth', age=22, address='cbe'}
-2024-09-13 17:41:25.651 [main] INFO  io.basics.JsonSerialization - JSON Before Deserialization stored in Person{name='asvanth', age=22, address='cbe'}
-2024-09-13 17:41:25.664 [main] INFO  io.basics.GenericMain - JSON: Person{name='asvanth', age=22, address='cbe'}
-2024-09-13 17:41:25.664 [main] INFO  io.basics.BinarySerialization - Binary Before Deserialization stored in java.io.ObjectOutputStream@335b5620
-2024-09-13 17:41:25.674 [main] INFO  io.basics.GenericMain - Binary: MyObject{name='BinaryExample', value=100}
-2024-09-13 17:41:25.675 [main] INFO  io.basics.JsonSerialization - JSON Before Deserialization stored in MyObject{name='BinaryExample', value=100}
-2024-09-13 17:41:25.676 [main] INFO  io.basics.GenericMain - JSON: MyObject{name='BinaryExample', value=100}

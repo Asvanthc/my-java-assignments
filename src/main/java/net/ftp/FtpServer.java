@@ -14,6 +14,7 @@ public class FtpServer {
             //noinspection InfiniteLoopStatement
             while (true) {
                 Socket clientSocket = serverSocket.accept();
+
                 LOGGER.info("Client connected");
                 new Thread(new ClientConnection(clientSocket)).start();
             }

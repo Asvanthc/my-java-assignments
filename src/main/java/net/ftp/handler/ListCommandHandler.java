@@ -14,8 +14,8 @@ public class ListCommandHandler implements Command {
     private final File currentDir;
 
     // Constructor to accept the directory path or other initialization parameters
-    public ListCommandHandler() {
-        this.currentDir = new File(SessionState.getInstance().getCurrentDirectory()); // Default to the "server_files" directory
+    public ListCommandHandler(SessionState sessionState) {
+        this.currentDir = new File(sessionState.getCurrentDirectory()); // Default to the "server_files" directory
     }
 
     @Override

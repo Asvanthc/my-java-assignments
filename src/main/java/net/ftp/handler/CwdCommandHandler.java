@@ -6,10 +6,11 @@ import java.io.File;
 public class CwdCommandHandler implements Command {
 
     private final String directoryPath;
-
+    private SessionState sessionState;
     // Constructor to accept the directory path as an argument
-    public CwdCommandHandler(String directoryPath) {
+    public CwdCommandHandler(String directoryPath, SessionState sessionState) {
         this.directoryPath = directoryPath;
+        this.sessionState=sessionState;
     }
 
     @Override
@@ -20,7 +21,7 @@ public class CwdCommandHandler implements Command {
 
         File dir = new File(directoryPath);
         if (dir.exists() && dir.isDirectory()) {
-            SessionState.getInstance().setCurrentDirectory(dir.getAbsolutePath()); // Update session directory
+            sessionState.setCurrentDirectory(dir.getAbsolutePath()); // Update session directory
             return "250 Directory changed to " + dir.getAbsolutePath() + ".\r\n";
         } else {
             return "404 No such directory.\r\n";
