@@ -1,79 +1,65 @@
 package net.ftp;
-import java.io.*;
-import java.net.Socket;
+
+import java.io.IOException;
+import java.nio.ByteBuffer;
+import java.nio.channels.SocketChannel;
 import net.ftp.handler.*;
 import net.ftp.exceptions.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 public class ClientConnection implements Runnable {
-    private final Socket clientSocket;
+    private final SocketChannel clientChannel;
     private static final Logger LOGGER = LogManager.getLogger(ClientConnection.class);
-    private SessionState sessionState; // Each client gets its own SessionState
+    private final SessionState sessionState;
 
-    public ClientConnection(Socket clientSocket) {
-        this.clientSocket = clientSocket;
-        sessionState=new SessionState();
+    public ClientConnection(SocketChannel clientChannel) {
+        this.clientChannel = clientChannel;
+        this.sessionState = new SessionState();
     }
 
     @Override
     public void run() {
-        try (BufferedInputStream in = new BufferedInputStream(clientSocket.getInputStream());
-             OutputStream out = clientSocket.getOutputStream()) {
+        ByteBuffer buffer = sessionState.getBuffer();
+        ByteBuffer buffer1= ByteBuffer.allocate(1024);
+        boolean isConnectionActive = true;
 
-            boolean isConnectionActive = true;
-
+        try {
             while (isConnectionActive) {
-                try {
-                    // Read and parse command
-                    Command cmd = CommandParser.getInstance().readAndParseCommand(in, out, sessionState);
-                    if (cmd == null) {
-                        LOGGER.info("Client closed connection or sent invalid command.");
-                        break;
-                    }
+                Command cmd = CommandParser.getInstance().readAndParseCommand(buffer, clientChannel, sessionState);
+                if (cmd == null) {
+                    LOGGER.info("Invalid command received or client disconnected.");
+                    break;
+                }
 
-                    // Handle command and send the response
-                    String response = cmd.handle();
-                    out.write(response.getBytes());
-                    out.flush();
+                String response = cmd.handle();
+                buffer1.clear();
+                buffer1.put(response.getBytes());
+                buffer1.flip();
+                 clientChannel.write(buffer1);
 
-                    // Check if the response indicates termination (e.g., QUIT)
-                    if (response.startsWith("999")) {
-                        LOGGER.info("Client requested connection termination.");
-                        isConnectionActive = false;
-                    }
-                } catch (FtpCommandException e) {  // Catch any FTP-related exception
-                    LOGGER.warn("Error processing command: {}", e.getMessage());
-                    sendErrorResponse(out, e.getErrorCode() + " " + e.getMessage() + "\r\n");
+                if (response.startsWith("999")) {
+                    LOGGER.info("Client requested connection termination.");
+                    isConnectionActive = false;
                 }
             }
         } catch (IOException e) {
             LOGGER.error("IO Exception in client connection: ", e);
+        } catch (InvalidCommandException e) {
+            LOGGER.warn("Invalid cmd client connection: ", e);
         } finally {
-            closeClientSocket();
+            closeClientChannel();
         }
     }
 
-    // Utility method to send error responses to the client
-    private void sendErrorResponse(OutputStream out, String message) {
+    private void closeClientChannel() {
         try {
-            out.write(message.getBytes());
-            out.flush();
-        } catch (IOException e) {
-            LOGGER.error("Failed to send error response to client: ", e);
-        }
-    }
-
-    // Utility method to close the client socket
-    private void closeClientSocket() {
-        try {
-            if (!clientSocket.isClosed()) {
-                clientSocket.close();
+            if (clientChannel.isOpen()) {
+                clientChannel.close();
                 LOGGER.info("Closed client connection.");
             }
         } catch (IOException e) {
-            LOGGER.error("Error while closing client socket: ", e);
+            LOGGER.error("Error while closing client channel: ", e);
         }
     }
-
 }

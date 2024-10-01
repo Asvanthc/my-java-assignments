@@ -6,12 +6,10 @@ public class SessionState {
 
     private String currentDirectory;
     private final ByteBuffer buffer;
-    private final ByteBufferBackedInputStream byteBufferInputStream;
 
     public SessionState() {
         this.currentDirectory = "/home/asvanth/IdeaProjects/my-java-assignments/server_files";
-        this.buffer = ByteBuffer.allocate(1024); // Allocate once
-        this.byteBufferInputStream = new ByteBufferBackedInputStream(buffer);  // Create once
+        this.buffer = ByteBuffer.allocate(1024); // Allocate once for the session
     }
 
     public String getCurrentDirectory() {
@@ -29,11 +27,4 @@ public class SessionState {
     public void resetBuffer() {
         buffer.clear();  // Reuse the buffer
     }
-
-    // Reuse the same ByteBufferBackedInputStream instance
-    public ByteBufferBackedInputStream getByteBufferInputStream() {
-        return byteBufferInputStream;
-    }
-
 }
-

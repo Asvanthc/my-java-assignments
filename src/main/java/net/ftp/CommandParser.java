@@ -6,66 +6,68 @@ import org.apache.logging.log4j.Logger;
 import net.ftp.handler.*;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.nio.ByteBuffer;
+import java.nio.channels.SocketChannel;
 import java.nio.charset.StandardCharsets;
 
 public class CommandParser {
 
     private static final CommandParser INSTANCE = new CommandParser();
     private static final Logger LOGGER = LogManager.getLogger(CommandParser.class);
-    private static final int BUFFER_SIZE = 1024;  // Larger buffer size for more efficient reading
-    private static final int MARK_LIMIT = 1024;  // Must match buffer size to ensure full reset capability
-
+    private static final int BUFFER_SIZE = 1024;
 
     private CommandParser() {
-
     }
 
     public static CommandParser getInstance() {
         return INSTANCE;
     }
 
-
-    public Command readAndParseCommand(InputStream in, OutputStream out, SessionState sessionState) throws IOException, InvalidCommandException {
-        byte[] buffer = new byte[BUFFER_SIZE];
+    public Command readAndParseCommand(ByteBuffer buffer, SocketChannel clientChannel, SessionState sessionState) throws IOException, InvalidCommandException {
         StringBuilder commandLine = new StringBuilder();
 
-        // Mark the stream with the same size as the buffer
-        in.mark(MARK_LIMIT);
 
-        int bytesRead;
-        while ((bytesRead = in.read(buffer)) != -1) {
-            // Convert the read bytes to a string
+        if(buffer.array()[0]==0) {
+            int bytesRead = clientChannel.read(buffer);
 
-            String chunk = new String(buffer, 0, bytesRead, StandardCharsets.UTF_8);
-            commandLine.append(chunk);
-
-            // Check if the chunk contains a newline character (command terminator)
-            int newlineIndex = chunk.indexOf('\n');
-            if (newlineIndex != -1) {
-                // Process the command up to the newline character
-                String fullCommand = commandLine.substring(0, commandLine.length() - (chunk.length() - newlineIndex)).trim();
-
-                // Reset the stream position to avoid consuming excess data beyond the command
-                in.reset();
-                //noinspection ResultOfMethodCallIgnored
-                in.skip(newlineIndex + 1);  // Skip past the newline character
-
-                return parse(fullCommand, in, out, sessionState);  // Pass output stream to parse
+            if (bytesRead == -1) {
+                LOGGER.info("Client closed connection.");
             }
 
-            // Re-mark the stream in case we need to reset later in the next chunk
-            in.mark(MARK_LIMIT);
+            buffer.flip();
         }
 
-        // If we reach here, it means the client has closed the connection
+//        buffer.mark();  // Mark the current position of the buffer
+
+        while (buffer.hasRemaining()) {
+            byte b = buffer.get();
+            commandLine.append((char) b);
+
+            // Check if the current character is a newline (command terminator)
+            if (b == '\n') {
+                String fullCommand = commandLine.toString().trim();
+                buffer.mark();
+                // Reset the buffer to the marked position
+                buffer.reset();
+                // Skip the newline character
+                buffer.position(buffer.position());
+
+                return parse(fullCommand, clientChannel, sessionState);
+            }
+
+            if (commandLine.length() >= BUFFER_SIZE) {
+                LOGGER.warn("Command exceeded buffer size.");
+                throw new InvalidCommandException("Command too long.");
+            }
+        }
+
+        // If we reach here, it means the client has closed the connection or the buffer is incomplete
         return null;
     }
 
-    public Command parse(String commandLine, InputStream in, OutputStream out, SessionState sessionState) throws InvalidCommandException {
+    public Command parse(String commandLine, SocketChannel clientChannel, SessionState sessionState) throws InvalidCommandException {
         if (commandLine == null || commandLine.trim().isEmpty()) {
-            throw new InvalidCommandException("Type Some command..cannot be empty");
+            throw new InvalidCommandException("Type some command, it cannot be empty.");
         }
 
         // Normalize spaces and trim leading/trailing whitespace
@@ -81,10 +83,10 @@ public class CommandParser {
         String argument = tokens.length > 1 ? tokens[1] : null;
         int size = tokens.length > 2 ? parseSize(tokens[2]) : -1;  // Get size if available
 
-        return createCommand(command, argument, size, in, out, sessionState);
+        return createCommand(command, argument, size, clientChannel, sessionState);
     }
 
-    private Command createCommand(String command, String argument, int size, InputStream in, OutputStream out, SessionState sessionState) throws InvalidCommandException {
+    private Command createCommand(String command, String argument, int size, SocketChannel clientChannel, SessionState sessionState) throws InvalidCommandException {
         return switch (command) {
             case "PASS" -> new PassCommandHandler(argument);
             case "LIST" -> new ListCommandHandler(sessionState);
@@ -92,8 +94,8 @@ public class CommandParser {
             case "CWD" -> new CwdCommandHandler(argument, sessionState);
             case "MKD" -> new MkdCommandHandler(argument);
             case "RMD" -> new RmdCommandHandler(argument);
-            case "STOR" -> new StorCommandHandler(argument, in, size, sessionState);
-            case "RETR" -> new RetrCommandHandler(argument, out, sessionState);
+            case "STOR" -> new StorCommandHandler(argument, clientChannel, size, sessionState);
+            case "RETR" -> new RetrCommandHandler(argument, clientChannel, sessionState);
             case "QUIT" -> new QuitCommandHandler();
             default -> throw new InvalidCommandException("Invalid or unsupported command: " + command);
         };
@@ -107,10 +109,4 @@ public class CommandParser {
             return -1;
         }
     }
-
-    public Command readAndParseCommand(com.DataTransfer dataTransfer, SessionState sessionState) throws IOException, InvalidCommandException {
-
-        return null;
-    }
-
 }

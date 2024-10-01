@@ -1,8 +1,10 @@
 package net.ftp.handler;
 
 import java.io.*;
+import java.nio.ByteBuffer;
+import java.nio.channels.SocketChannel;
 import net.ftp.SessionState;
-import net.ftp.exceptions.*;
+import net.ftp.exceptions.FileStorageException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -16,13 +18,13 @@ public class StorCommandHandler implements Command {
 
     private static final int BUFFER_SIZE = 1024;
     private final String fileName;
-    private final InputStream clientInput;
+    private final SocketChannel clientChannel; // Changed to SocketChannel
     private final int size;
     private final SessionState sessionState;
 
-    public StorCommandHandler(String fileName, InputStream clientInput, int size, SessionState sessionState) {
+    public StorCommandHandler(String fileName, SocketChannel clientChannel, int size, SessionState sessionState) {
         this.fileName = fileName;
-        this.clientInput = clientInput;
+        this.clientChannel = clientChannel; // Initialize SocketChannel
         this.size = size;
         this.sessionState = sessionState;
     }
@@ -63,17 +65,25 @@ public class StorCommandHandler implements Command {
 
     private void writeFile(File file) throws FileStorageException {
         try (BufferedOutputStream fileOutput = new BufferedOutputStream(new FileOutputStream(file))) {
-            byte[] buffer = new byte[BUFFER_SIZE];
+            ByteBuffer buffer = ByteBuffer.allocate(BUFFER_SIZE); // Use ByteBuffer
             long bytesWritten = 0;
-            int bytesRead;
 
-            // Log start of file transfer
-            LOGGER.info("Starting file write.  Size: {}", size);
+            LOGGER.info("Starting file write. Size: {}", size);
 
-            while (bytesWritten < size && (bytesRead = clientInput.read(buffer, 0, Math.min(buffer.length, size - (int) bytesWritten))) != -1) {
-                fileOutput.write(buffer, 0, bytesRead);
-                bytesWritten += bytesRead;
-                LOGGER.debug("Written {} bytes so far.", bytesWritten);
+            while (bytesWritten < size) {
+                int bytesRead = clientChannel.read(buffer); // Read from SocketChannel
+                if (bytesRead == -1) {
+                    throw new FileStorageException("Client closed connection during transfer.", null);
+                }
+                buffer.flip(); // Prepare buffer for writing
+
+                // Write to the file from the buffer
+                while (buffer.hasRemaining() && bytesWritten < size) {
+                    fileOutput.write(buffer.get());
+                    bytesWritten++;
+                    LOGGER.debug("Written {} bytes so far.", bytesWritten);
+                }
+                buffer.clear(); // Clear buffer for next read
             }
 
             if (bytesWritten != size) {
