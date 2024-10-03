@@ -21,6 +21,7 @@ public class StorCommandHandler implements Command {
     private final SocketChannel clientChannel; // Changed to SocketChannel
     private final int size;
     private final SessionState sessionState;
+    private ByteBuffer buffer1= ByteBuffer.allocate(1024);//for common writing
 
     public StorCommandHandler(String fileName, SocketChannel clientChannel, int size, SessionState sessionState) {
         this.fileName = fileName;
@@ -65,25 +66,53 @@ public class StorCommandHandler implements Command {
 
     private void writeFile(File file) throws FileStorageException {
         try (BufferedOutputStream fileOutput = new BufferedOutputStream(new FileOutputStream(file))) {
-            ByteBuffer buffer = ByteBuffer.allocate(BUFFER_SIZE); // Use ByteBuffer
+            ByteBuffer buffer = sessionState.getBuffer(); // Use ByteBuffer
             long bytesWritten = 0;
 
             LOGGER.info("Starting file write. Size: {}", size);
 
             while (bytesWritten < size) {
-                int bytesRead = clientChannel.read(buffer); // Read from SocketChannel
-                if (bytesRead == -1) {
-                    throw new FileStorageException("Client closed connection during transfer.", null);
+                if (buffer.hasRemaining() && (buffer.limit()-buffer.position())>size && (buffer.position()!=0)){
+                    byte[] subsetArray = new byte[size];
+                    buffer.get(subsetArray, 0, size);
+                    buffer1=ByteBuffer.wrap(subsetArray);
+                    buffer.mark();
+                    // Reset the buffer to the marked position
+                    buffer.reset();
+                    // Skip the newline character
+                    buffer.position(buffer.position());
+                    if(buffer.limit()==buffer.position()){
+                        buffer.clear();
+                    }
                 }
-                buffer.flip(); // Prepare buffer for writing
+
+                if(buffer.hasRemaining() && (buffer.limit()-buffer.position())<size){
+                    buffer1=ByteBuffer.allocate(buffer.remaining());
+                    buffer.clear();
+                }
+
+                if(buffer.position()==0) {
+                    int bytesRead = clientChannel.read(buffer1); // Read from SocketChannel
+                    buffer1.flip(); // Prepare buffer for writing
+                    if (bytesRead == -1) {
+                        throw new FileStorageException("Client closed connection during transfer.", null);
+                    }
+                }
 
                 // Write to the file from the buffer
-                while (buffer.hasRemaining() && bytesWritten < size) {
-                    fileOutput.write(buffer.get());
+                while (buffer1.hasRemaining() && bytesWritten < size) {
+                    fileOutput.write(buffer1.get());
                     bytesWritten++;
                     LOGGER.debug("Written {} bytes so far.", bytesWritten);
                 }
-                buffer.clear(); // Clear buffer for next read
+                while(buffer1.hasRemaining()) {
+                     // Prepare buffer for reading from the beginning
+                    byte b=buffer1.get();
+                    buffer.put(b);
+
+                }
+                buffer.flip();
+                buffer1.clear(); // Clear buffer for next read
             }
 
             if (bytesWritten != size) {
@@ -103,5 +132,13 @@ public class StorCommandHandler implements Command {
 
     public int getSize() {
         return size;
+    }
+
+    public ByteBuffer getBuffer1() {
+        return buffer1;
+    }
+
+    public void setBuffer1(ByteBuffer buffer1) {
+        this.buffer1 = buffer1;
     }
 }

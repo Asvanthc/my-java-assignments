@@ -15,6 +15,7 @@ public class CommandParser {
     private static final CommandParser INSTANCE = new CommandParser();
     private static final Logger LOGGER = LogManager.getLogger(CommandParser.class);
     private static final int BUFFER_SIZE = 1024;
+    int bytesRead=0;
 
     private CommandParser() {
     }
@@ -26,9 +27,8 @@ public class CommandParser {
     public Command readAndParseCommand(ByteBuffer buffer, SocketChannel clientChannel, SessionState sessionState) throws IOException, InvalidCommandException {
         StringBuilder commandLine = new StringBuilder();
 
-
-        if(buffer.array()[0]==0) {
-            int bytesRead = clientChannel.read(buffer);
+        if(buffer.position()==0 && buffer.limit()==buffer.capacity()) {
+            bytesRead = clientChannel.read(buffer);
 
             if (bytesRead == -1) {
                 LOGGER.info("Client closed connection.");
@@ -39,7 +39,7 @@ public class CommandParser {
 
 //        buffer.mark();  // Mark the current position of the buffer
 
-        while (buffer.hasRemaining()) {
+        while (buffer.hasRemaining() && bytesRead>0) {
             byte b = buffer.get();
             commandLine.append((char) b);
 
@@ -51,6 +51,10 @@ public class CommandParser {
                 buffer.reset();
                 // Skip the newline character
                 buffer.position(buffer.position());
+
+                if(buffer.limit()==buffer.position()){
+                    buffer.clear();
+                }
 
                 return parse(fullCommand, clientChannel, sessionState);
             }

@@ -12,6 +12,7 @@ public class ClientConnection implements Runnable {
     private final SocketChannel clientChannel;
     private static final Logger LOGGER = LogManager.getLogger(ClientConnection.class);
     private final SessionState sessionState;
+    ByteBuffer buffer1= ByteBuffer.allocate(1024);//for common writing
 
     public ClientConnection(SocketChannel clientChannel) {
         this.clientChannel = clientChannel;
@@ -21,24 +22,19 @@ public class ClientConnection implements Runnable {
     @Override
     public void run() {
         ByteBuffer buffer = sessionState.getBuffer();
-        ByteBuffer buffer1= ByteBuffer.allocate(1024);
+
         boolean isConnectionActive = true;
 
         try {
             while (isConnectionActive) {
                 Command cmd = CommandParser.getInstance().readAndParseCommand(buffer, clientChannel, sessionState);
-                if (cmd == null) {
-                    LOGGER.info("Invalid command received or client disconnected.");
-                    break;
-                }
-
                 String response = cmd.handle();
                 buffer1.clear();
                 buffer1.put(response.getBytes());
                 buffer1.flip();
                  clientChannel.write(buffer1);
 
-                if (response.startsWith("999")) {
+                if (cmd instanceof QuitCommandHandler) {
                     LOGGER.info("Client requested connection termination.");
                     isConnectionActive = false;
                 }
@@ -47,6 +43,7 @@ public class ClientConnection implements Runnable {
             LOGGER.error("IO Exception in client connection: ", e);
         } catch (InvalidCommandException e) {
             LOGGER.warn("Invalid cmd client connection: ", e);
+            sendErrorResponse(e.getErrorCode() + " " + e.getMessage() + "\r\n");
         } finally {
             closeClientChannel();
         }
@@ -62,4 +59,18 @@ public class ClientConnection implements Runnable {
             LOGGER.error("Error while closing client channel: ", e);
         }
     }
+
+    // Utility method to send error responses to the client
+    private void sendErrorResponse(String message) {
+        try {
+            ByteBuffer b=ByteBuffer.allocate(100);
+            b.clear();
+            b.put(message.getBytes());
+            b.flip();
+            clientChannel.write(b);
+        } catch (IOException e) {
+            LOGGER.error("Failed to send error response to client: ", e);
+        }
+    }
+
 }
