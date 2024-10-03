@@ -27,24 +27,26 @@ public class ClientConnection implements Runnable {
 
         try {
             while (isConnectionActive) {
-                Command cmd = CommandParser.getInstance().readAndParseCommand(buffer, clientChannel, sessionState);
-                String response = cmd.handle();
-                buffer1.clear();
-                buffer1.put(response.getBytes());
-                buffer1.flip();
-                 clientChannel.write(buffer1);
+                try {
+                    Command cmd = CommandParser.getInstance().readAndParseCommand(buffer, clientChannel, sessionState);
 
-                if (cmd instanceof QuitCommandHandler) {
-                    LOGGER.info("Client requested connection termination.");
-                    isConnectionActive = false;
+                    String response = cmd.handle();
+                    buffer1.clear();
+                    buffer1.put(response.getBytes());
+                    buffer1.flip();
+                    clientChannel.write(buffer1);
+
+                    if (cmd instanceof QuitCommandHandler) {
+                        LOGGER.info("Client requested connection termination.");
+                        isConnectionActive = false;
+                    }
+                }  catch (InvalidCommandException e) {
+                    LOGGER.warn("Invalid cmd client connection: ", e);
+                    sendErrorResponse(e.getErrorCode() + " " + e.getMessage() + "\r\n");
                 }
             }
         } catch (IOException e) {
             LOGGER.error("IO Exception in client connection: ", e);
-        } catch (InvalidCommandException e) {
-            LOGGER.warn("Invalid cmd client connection: ", e);
-            sendErrorResponse(e.getErrorCode() + " " + e.getMessage() + "\r\n");
-        } finally {
             closeClientChannel();
         }
     }

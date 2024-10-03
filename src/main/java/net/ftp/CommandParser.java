@@ -54,6 +54,7 @@ public class CommandParser {
 
                 if(buffer.limit()==buffer.position()){
                     buffer.clear();
+                    sessionState.flag=false;
                 }
 
                 return parse(fullCommand, clientChannel, sessionState);

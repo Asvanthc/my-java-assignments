@@ -105,13 +105,15 @@ public class StorCommandHandler implements Command {
                     bytesWritten++;
                     LOGGER.debug("Written {} bytes so far.", bytesWritten);
                 }
+                boolean flag=false;
                 while(buffer1.hasRemaining()) {
                      // Prepare buffer for reading from the beginning
                     byte b=buffer1.get();
                     buffer.put(b);
+                    flag=true;
 
                 }
-                buffer.flip();
+                if(flag) buffer.flip();
                 buffer1.clear(); // Clear buffer for next read
             }
 

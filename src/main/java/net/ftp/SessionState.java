@@ -6,6 +6,7 @@ public class SessionState {
 
     private String currentDirectory;
     private final ByteBuffer buffer;
+    boolean flag=true;
 
     public SessionState() {
         this.currentDirectory = "/home/asvanth/IdeaProjects/my-java-assignments/server_files";
