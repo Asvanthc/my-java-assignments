@@ -1,0 +1,183 @@
+2024-10-01 15:46:58.106 [main] INFO  net.ftp.FTPNioServer - FTP Server started on port 2121...
+2024-10-01 15:47:08.972 [main] INFO  net.ftp.FTPNioServer - Accepted connection from /127.0.0.1:45232
+2024-10-01 15:48:37.428 [main] INFO  net.ftp.FTPNioServer - FTP Server started on port 2121...
+2024-10-01 15:48:40.319 [main] INFO  net.ftp.FTPNioServer - Accepted connection from /127.0.0.1:46342
+2024-10-01 15:48:41.871 [main] INFO  net.ftp.FTPNioServer - net.ftp.handler.ListCommandHandler@4c1909a3
+2024-10-01 15:48:42.906 [main] ERROR net.ftp.FTPNioServer - Error handling client read: Invalid or unsupported command: S
+net.ftp.exceptions.InvalidCommandException: Invalid or unsupported command: S
+	at net.ftp.CommandParser.createCommand(CommandParser.java:94)
+	at net.ftp.CommandParser.parse(CommandParser.java:80)
+	at net.ftp.CommandParser.readAndParseCommand(CommandParser.java:51)
+	at net.ftp.FTPNioServer.handleRead(FTPNioServer.java:80)
+	at net.ftp.FTPNioServer.startServer(FTPNioServer.java:53)
+	at net.ftp.FTPNioServer.main(FTPNioServer.java:27)
+2024-10-01 15:48:46.534 [main] INFO  net.ftp.FTPNioServer - Accepted connection from /127.0.0.1:46346
+2024-10-01 15:48:47.241 [main] ERROR net.ftp.FTPNioServer - Error handling client read: Invalid or unsupported command: D
+net.ftp.exceptions.InvalidCommandException: Invalid or unsupported command: D
+	at net.ftp.CommandParser.createCommand(CommandParser.java:94)
+	at net.ftp.CommandParser.parse(CommandParser.java:80)
+	at net.ftp.CommandParser.readAndParseCommand(CommandParser.java:51)
+	at net.ftp.FTPNioServer.handleRead(FTPNioServer.java:80)
+	at net.ftp.FTPNioServer.startServer(FTPNioServer.java:53)
+	at net.ftp.FTPNioServer.main(FTPNioServer.java:27)
+2024-10-01 16:44:05.489 [main] INFO  net.ftp.FtpServer - Server is running on port 2121
+2024-10-01 17:17:42.072 [main] INFO  net.ftp.FtpServer - Server is running on port 2121
+2024-10-01 17:18:02.447 [main] INFO  net.ftp.FtpServer - Client connected
+2024-10-01 17:18:11.045 [Thread-0] INFO  net.ftp.handler.RetrCommandHandler - Starting file transfer: /home/asvanth/IdeaProjects/my-java-assignments/server_files/1
+2024-10-01 17:18:11.046 [Thread-0] INFO  net.ftp.handler.RetrCommandHandler - File transfer complete: /home/asvanth/IdeaProjects/my-java-assignments/server_files/1
+2024-10-01 17:18:25.386 [Thread-0] INFO  net.ftp.handler.StorCommandHandler - Starting file write. Size: 1
+2024-10-01 17:18:30.129 [Thread-0] INFO  net.ftp.handler.RetrCommandHandler - Starting file transfer: /home/asvanth/IdeaProjects/my-java-assignments/server_files/1
+2024-10-01 17:18:30.130 [Thread-0] INFO  net.ftp.handler.RetrCommandHandler - File transfer complete: /home/asvanth/IdeaProjects/my-java-assignments/server_files/1
+2024-10-01 17:18:50.865 [Thread-0] INFO  net.ftp.handler.RetrCommandHandler - Starting file transfer: /home/asvanth/IdeaProjects/my-java-assignments/server_files/asvanth.txt
+2024-10-01 17:18:50.866 [Thread-0] INFO  net.ftp.handler.RetrCommandHandler - File transfer complete: /home/asvanth/IdeaProjects/my-java-assignments/server_files/asvanth.txt
+2024-10-01 17:19:53.553 [Thread-0] WARN  net.ftp.ClientConnection - Invalid cmd client connection: 
+net.ftp.exceptions.InvalidCommandException: Type some command, it cannot be empty.
+	at net.ftp.CommandParser.parse(CommandParser.java:59)
+	at net.ftp.CommandParser.readAndParseCommand(CommandParser.java:44)
+	at net.ftp.ClientConnection.run(ClientConnection.java:37)
+	at java.base/java.lang.Thread.run(Thread.java:1570)
+2024-10-01 17:19:53.555 [Thread-0] INFO  net.ftp.ClientConnection - Closed client connection.
+2024-10-01 17:19:57.669 [main] INFO  net.ftp.FtpServer - Client connected
+2024-10-01 17:20:11.640 [Thread-1] WARN  net.ftp.ClientConnection - Invalid cmd client connection: 
+net.ftp.exceptions.InvalidCommandException: Type some command, it cannot be empty.
+	at net.ftp.CommandParser.parse(CommandParser.java:59)
+	at net.ftp.CommandParser.readAndParseCommand(CommandParser.java:44)
+	at net.ftp.ClientConnection.run(ClientConnection.java:37)
+	at java.base/java.lang.Thread.run(Thread.java:1570)
+2024-10-01 17:20:11.642 [Thread-1] INFO  net.ftp.ClientConnection - Closed client connection.
+2024-10-01 17:20:17.413 [main] INFO  net.ftp.FtpServer - Client connected
+2024-10-01 17:20:23.105 [Thread-2] INFO  net.ftp.handler.RetrCommandHandler - Starting file transfer: /home/asvanth/IdeaProjects/my-java-assignments/server_files/1
+2024-10-01 17:20:23.106 [Thread-2] INFO  net.ftp.handler.RetrCommandHandler - File transfer complete: /home/asvanth/IdeaProjects/my-java-assignments/server_files/1
+2024-10-01 17:20:54.505 [Thread-2] INFO  net.ftp.handler.StorCommandHandler - Starting file write. Size: 1
+2024-10-01 17:21:01.457 [Thread-2] INFO  net.ftp.handler.StorCommandHandler - Starting file write. Size: -1
+2024-10-01 17:21:01.463 [Thread-2] ERROR net.ftp.handler.StorCommandHandler - File storage error: Incomplete file transfer. Expected: -1 bytes, but wrote: 0
+net.ftp.exceptions.FileStorageException: Incomplete file transfer. Expected: -1 bytes, but wrote: 0
+	at net.ftp.handler.StorCommandHandler.writeFile(StorCommandHandler.java:90)
+	at net.ftp.handler.StorCommandHandler.handle(StorCommandHandler.java:50)
+	at net.ftp.ClientConnection.run(ClientConnection.java:43)
+	at java.base/java.lang.Thread.run(Thread.java:1570)
+2024-10-01 17:21:03.664 [Thread-2] WARN  net.ftp.ClientConnection - Invalid cmd client connection: 
+net.ftp.exceptions.InvalidCommandException: Type some command, it cannot be empty.
+	at net.ftp.CommandParser.parse(CommandParser.java:59)
+	at net.ftp.CommandParser.readAndParseCommand(CommandParser.java:44)
+	at net.ftp.ClientConnection.run(ClientConnection.java:37)
+	at java.base/java.lang.Thread.run(Thread.java:1570)
+2024-10-01 17:21:03.665 [Thread-2] INFO  net.ftp.ClientConnection - Closed client connection.
+2024-10-01 17:21:05.604 [main] INFO  net.ftp.FtpServer - Client connected
+2024-10-01 17:21:10.105 [Thread-3] INFO  net.ftp.handler.StorCommandHandler - Starting file write. Size: 0
+2024-10-01 17:21:19.864 [Thread-3] INFO  net.ftp.handler.StorCommandHandler - Starting file write. Size: 2
+2024-10-01 17:21:50.480 [Thread-3] INFO  net.ftp.ClientConnection - Client closed connection.
+2024-10-01 17:21:50.481 [Thread-3] INFO  net.ftp.ClientConnection - Closed client connection.
+2024-10-01 17:21:51.732 [main] INFO  net.ftp.FtpServer - Client connected
+2024-10-01 17:22:18.816 [Thread-4] INFO  net.ftp.ClientConnection - Client closed connection.
+2024-10-01 17:22:18.817 [Thread-4] INFO  net.ftp.ClientConnection - Closed client connection.
+2024-10-01 17:22:20.229 [main] INFO  net.ftp.FtpServer - Client connected
+2024-10-01 17:22:34.418 [main] INFO  net.ftp.FtpServer - Server is running on port 2121
+2024-10-01 17:22:43.717 [main] INFO  net.ftp.FtpServer - Client connected
+2024-10-01 17:29:05.694 [Thread-0] INFO  net.ftp.handler.RetrCommandHandler - Starting file transfer: /home/asvanth/IdeaProjects/my-java-assignments/server_files/asvanth.txt
+2024-10-01 17:32:49.551 [main] INFO  net.ftp.FtpServer - Server is running on port 2121
+2024-10-01 17:32:54.985 [main] INFO  net.ftp.FtpServer - Client connected
+2024-10-01 17:34:25.147 [Thread-0] INFO  net.ftp.handler.RetrCommandHandler - Starting file transfer: /home/asvanth/IdeaProjects/my-java-assignments/server_files/asvanth.txt
+2024-10-01 17:35:40.834 [main] INFO  net.ftp.FtpServer - Server is running on port 2121
+2024-10-01 17:35:57.982 [main] INFO  net.ftp.FtpServer - Client connected
+2024-10-01 17:36:03.650 [Thread-0] INFO  net.ftp.handler.RetrCommandHandler - Starting file transfer: /home/asvanth/IdeaProjects/my-java-assignments/server_files/asvanth.txt
+2024-10-01 17:38:58.313 [main] INFO  net.ftp.FtpServer - Server is running on port 2121
+2024-10-01 17:39:04.571 [main] INFO  net.ftp.FtpServer - Client connected
+2024-10-01 17:39:11.858 [Thread-0] INFO  net.ftp.handler.RetrCommandHandler - Starting file transfer: /home/asvanth/IdeaProjects/my-java-assignments/server_files/asvanth.txt
+2024-10-01 17:39:57.597 [Thread-0] INFO  net.ftp.handler.RetrCommandHandler - File transfer complete: /home/asvanth/IdeaProjects/my-java-assignments/server_files/asvanth.txt
+2024-10-01 17:41:10.234 [main] INFO  net.ftp.FtpServer - Server is running on port 2121
+2024-10-01 17:41:15.061 [main] INFO  net.ftp.FtpServer - Client connected
+2024-10-01 17:41:24.691 [Thread-0] INFO  net.ftp.handler.RetrCommandHandler - Starting file transfer: /home/asvanth/IdeaProjects/my-java-assignments/server_files/asvanth.txt
+2024-10-01 17:41:58.250 [Thread-0] INFO  net.ftp.handler.RetrCommandHandler - File transfer complete: /home/asvanth/IdeaProjects/my-java-assignments/server_files/asvanth.txt
+2024-10-01 17:43:32.133 [Thread-0] INFO  net.ftp.handler.StorCommandHandler - Starting file write. Size: 1
+2024-10-01 17:45:31.624 [Thread-0] INFO  net.ftp.handler.StorCommandHandler - Starting file write. Size: 1
+2024-10-01 17:46:30.789 [Thread-0] INFO  net.ftp.handler.RetrCommandHandler - Starting file transfer: /home/asvanth/IdeaProjects/my-java-assignments/server_files/asvanth.txt
+2024-10-01 17:46:45.700 [Thread-0] INFO  net.ftp.handler.RetrCommandHandler - File transfer complete: /home/asvanth/IdeaProjects/my-java-assignments/server_files/asvanth.txt
+2024-10-01 17:47:44.118 [Thread-0] INFO  net.ftp.handler.StorCommandHandler - Starting file write. Size: 2
+2024-10-01 17:49:16.561 [Thread-0] INFO  net.ftp.handler.StorCommandHandler - Starting file write. Size: 1
+2024-10-01 17:50:16.713 [Thread-0] INFO  net.ftp.handler.RetrCommandHandler - Starting file transfer: /home/asvanth/IdeaProjects/my-java-assignments/server_files/asvanth.txt
+2024-10-01 17:51:09.473 [Thread-0] INFO  net.ftp.handler.RetrCommandHandler - File transfer complete: /home/asvanth/IdeaProjects/my-java-assignments/server_files/asvanth.txt
+2024-10-01 17:51:09.478 [Thread-0] WARN  net.ftp.ClientConnection - Invalid cmd client connection: 
+net.ftp.exceptions.InvalidCommandException: Type some command, it cannot be empty.
+	at net.ftp.CommandParser.parse(CommandParser.java:59)
+	at net.ftp.CommandParser.readAndParseCommand(CommandParser.java:44)
+	at net.ftp.ClientConnection.run(ClientConnection.java:37)
+	at java.base/java.lang.Thread.run(Thread.java:1570)
+2024-10-01 17:51:09.488 [Thread-0] INFO  net.ftp.ClientConnection - Closed client connection.
+2024-10-01 17:51:14.571 [main] INFO  net.ftp.FtpServer - Client connected
+2024-10-01 17:51:38.102 [main] INFO  net.ftp.FtpServer - Server is running on port 2121
+2024-10-01 17:51:41.021 [main] INFO  net.ftp.FtpServer - Client connected
+2024-10-01 17:51:50.865 [Thread-0] INFO  net.ftp.handler.RetrCommandHandler - Starting file transfer: /home/asvanth/IdeaProjects/my-java-assignments/server_files/asvanth.txt
+2024-10-01 17:51:50.866 [Thread-0] INFO  net.ftp.handler.RetrCommandHandler - File transfer complete: /home/asvanth/IdeaProjects/my-java-assignments/server_files/asvanth.txt
+2024-10-01 17:52:00.186 [Thread-0] INFO  net.ftp.handler.StorCommandHandler - Starting file write. Size: 10
+2024-10-01 17:52:09.417 [Thread-0] INFO  net.ftp.handler.RetrCommandHandler - Starting file transfer: /home/asvanth/IdeaProjects/my-java-assignments/server_files/asvanth.txt
+2024-10-01 17:52:09.417 [Thread-0] INFO  net.ftp.handler.RetrCommandHandler - File transfer complete: /home/asvanth/IdeaProjects/my-java-assignments/server_files/asvanth.txt
+2024-10-01 17:52:47.514 [Thread-0] INFO  net.ftp.handler.StorCommandHandler - Starting file write. Size: 10
+2024-10-01 17:53:09.145 [Thread-0] WARN  net.ftp.ClientConnection - Invalid cmd client connection: 
+net.ftp.exceptions.InvalidCommandException: Type some command, it cannot be empty.
+	at net.ftp.CommandParser.parse(CommandParser.java:59)
+	at net.ftp.CommandParser.readAndParseCommand(CommandParser.java:44)
+	at net.ftp.ClientConnection.run(ClientConnection.java:37)
+	at java.base/java.lang.Thread.run(Thread.java:1570)
+2024-10-01 17:53:09.147 [Thread-0] INFO  net.ftp.ClientConnection - Closed client connection.
+2024-10-01 17:53:46.101 [main] INFO  net.ftp.FtpServer - Client connected
+2024-10-01 17:53:53.898 [main] INFO  net.ftp.FtpServer - Server is running on port 2121
+2024-10-01 17:54:14.976 [main] INFO  net.ftp.FtpServer - Client connected
+2024-10-01 17:55:50.960 [main] INFO  net.ftp.FtpServer - Server is running on port 2121
+2024-10-01 17:55:53.257 [main] INFO  net.ftp.FtpServer - Client connected
+2024-10-01 17:58:13.245 [Thread-0] WARN  net.ftp.ClientConnection - Invalid cmd client connection: 
+net.ftp.exceptions.InvalidCommandException: Type some command, it cannot be empty.
+	at net.ftp.CommandParser.parse(CommandParser.java:59)
+	at net.ftp.CommandParser.readAndParseCommand(CommandParser.java:44)
+	at net.ftp.ClientConnection.run(ClientConnection.java:37)
+	at java.base/java.lang.Thread.run(Thread.java:1570)
+2024-10-01 17:58:39.470 [Thread-0] INFO  net.ftp.ClientConnection - Closed client connection.
+2024-10-01 18:02:36.633 [main] INFO  net.ftp.FtpServer - Server is running on port 2121
+2024-10-01 18:05:46.107 [main] INFO  net.ftp.FtpServer - Server is running on port 2121
+2024-10-01 18:05:55.711 [main] INFO  net.ftp.FtpServer - Client connected
+2024-10-01 18:09:27.147 [main] INFO  net.ftp.FtpServer - Server is running on port 2121
+2024-10-01 18:09:29.773 [main] INFO  net.ftp.FtpServer - Client connected
+2024-10-01 18:09:39.852 [main] INFO  net.ftp.FtpServer - Server is running on port 2121
+2024-10-01 18:09:45.027 [main] INFO  net.ftp.FtpServer - Client connected
+2024-10-01 18:11:28.656 [main] INFO  net.ftp.FtpServer - Server is running on port 2121
+2024-10-01 18:11:32.521 [main] INFO  net.ftp.FtpServer - Client connected
+2024-10-01 18:12:24.014 [Thread-0] INFO  net.ftp.ClientConnection - Closed client connection.
+2024-10-01 18:12:58.159 [main] INFO  net.ftp.FtpServer - Server is running on port 2121
+2024-10-01 18:13:05.907 [main] INFO  net.ftp.FtpServer - Client connected
+2024-10-01 18:13:21.450 [Thread-0] WARN  net.ftp.ClientConnection - Invalid cmd client connection: 
+net.ftp.exceptions.InvalidCommandException: Type some command, it cannot be empty.
+	at net.ftp.CommandParser.parse(CommandParser.java:69)
+	at net.ftp.CommandParser.readAndParseCommand(CommandParser.java:54)
+	at net.ftp.ClientConnection.run(ClientConnection.java:29)
+	at java.base/java.lang.Thread.run(Thread.java:1570)
+2024-10-01 18:13:21.459 [Thread-0] INFO  net.ftp.ClientConnection - Closed client connection.
+2024-10-01 18:13:24.793 [main] INFO  net.ftp.FtpServer - Client connected
+2024-10-01 18:13:39.496 [main] INFO  net.ftp.FtpServer - Client connected
+2024-10-01 18:15:12.825 [main] INFO  net.ftp.FtpServer - Server is running on port 2121
+2024-10-01 18:15:29.640 [main] INFO  net.ftp.FtpServer - Client connected
+2024-10-01 18:18:07.575 [Thread-0] WARN  net.ftp.ClientConnection - Invalid cmd client connection: 
+net.ftp.exceptions.InvalidCommandException: Invalid or unsupported command: DFVNFLDGBFDNGKJF
+	at net.ftp.CommandParser.createCommand(CommandParser.java:99)
+	at net.ftp.CommandParser.parse(CommandParser.java:85)
+	at net.ftp.CommandParser.readAndParseCommand(CommandParser.java:54)
+	at net.ftp.ClientConnection.run(ClientConnection.java:29)
+	at java.base/java.lang.Thread.run(Thread.java:1570)
+2024-10-01 18:18:07.586 [Thread-0] INFO  net.ftp.ClientConnection - Closed client connection.
+2024-10-01 18:18:12.088 [main] INFO  net.ftp.FtpServer - Client connected
+2024-10-01 18:18:14.270 [main] INFO  net.ftp.FtpServer - Server is running on port 2121
+2024-10-01 18:18:16.227 [main] INFO  net.ftp.FtpServer - Client connected
+2024-10-01 18:19:57.307 [main] INFO  net.ftp.FtpServer - Server is running on port 2121
+2024-10-01 18:20:06.280 [main] INFO  net.ftp.FtpServer - Client connected
+2024-10-01 18:22:15.561 [main] INFO  net.ftp.FtpServer - Server is running on port 2121
+2024-10-01 18:22:21.533 [main] INFO  net.ftp.FtpServer - Client connected
+2024-10-01 18:27:00.410 [main] INFO  net.ftp.FtpServer - Server is running on port 2121
+2024-10-01 18:27:10.280 [main] INFO  net.ftp.FtpServer - Client connected
+2024-10-01 18:28:38.727 [main] INFO  net.ftp.FtpServer - Server is running on port 2121
+2024-10-01 18:28:42.183 [main] INFO  net.ftp.FtpServer - Client connected
+2024-10-01 18:31:37.263 [main] INFO  net.ftp.FtpServer - Server is running on port 2121
+2024-10-01 18:31:40.053 [main] INFO  net.ftp.FtpServer - Client connected
+2024-10-01 18:34:18.228 [main] INFO  net.ftp.FtpServer - Server is running on port 2121
+2024-10-01 18:34:21.664 [main] INFO  net.ftp.FtpServer - Client connected
+2024-10-01 18:36:20.990 [main] INFO  net.ftp.FtpServer - Server is running on port 2121
+2024-10-01 18:37:09.134 [main] INFO  net.ftp.FtpServer - Client connected
+2024-10-01 18:38:48.543 [Thread-0] INFO  net.ftp.handler.StorCommandHandler - Starting file write. Size: 10
