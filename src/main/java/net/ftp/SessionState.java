@@ -6,11 +6,28 @@ public class SessionState {
 
     private String currentDirectory;
     private final ByteBuffer buffer;
-    boolean flag=true;
+    private boolean flagRead=true;
+    private boolean isWritingFile = false;
 
     public SessionState() {
         this.currentDirectory = "/home/asvanth/IdeaProjects/my-java-assignments/server_files";
         this.buffer = ByteBuffer.allocate(1024); // Allocate once for the session
+    }
+
+    public boolean flagRead() {
+        return flagRead;
+    }
+
+    public void setFlagRead(boolean flagRead) {
+        this.flagRead = flagRead;
+    }
+
+    public boolean isWritingFile() {
+        return isWritingFile;
+    }
+
+    public void setWritingFile(boolean writingFile) {
+        isWritingFile = writingFile;
     }
 
     public String getCurrentDirectory() {

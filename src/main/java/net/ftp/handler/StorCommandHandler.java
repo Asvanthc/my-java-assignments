@@ -73,7 +73,8 @@ public class StorCommandHandler implements Command {
 
             while (bytesWritten < size) {
                 if (buffer.hasRemaining() && (buffer.limit()-buffer.position())>size && (buffer.position()!=0)){
-                    byte[] subsetArray = new byte[size];
+                    int bytesToWrite = Math.min(buffer.remaining(), (int) (size - bytesWritten));
+                    byte[] subsetArray = new byte[bytesToWrite];
                     buffer.get(subsetArray, 0, size);
                     buffer1=ByteBuffer.wrap(subsetArray);
                     buffer.mark();
@@ -113,7 +114,10 @@ public class StorCommandHandler implements Command {
                     flag=true;
 
                 }
-                if(flag) buffer.flip();
+                if(flag){
+                    buffer.flip();
+                    sessionState.setFlagRead(true);
+                }
                 buffer1.clear(); // Clear buffer for next read
             }
 

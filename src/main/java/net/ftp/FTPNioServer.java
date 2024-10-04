@@ -39,7 +39,7 @@ public class FTPNioServer {
                     } else if (key.isReadable()) {
                         SocketChannel clientChannel = (SocketChannel) key.channel();
                         SessionState sessionState = (SessionState) key.attachment();
-                        sessionState.flag=true;
+                        sessionState.setFlagRead(true);
                         handleClientRequest(clientChannel, sessionState);
                     }
                 }
@@ -61,7 +61,7 @@ public class FTPNioServer {
 
         try {
 
-            while (buffer.hasRemaining() && sessionState.flag) {
+            while (buffer.hasRemaining() && sessionState.flagRead()) {
                 try {
                     // Parse command from buffer
                     Command cmd = CommandParser.getInstance().readAndParseCommand(buffer, clientChannel, sessionState);

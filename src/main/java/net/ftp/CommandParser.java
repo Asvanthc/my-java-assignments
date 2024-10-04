@@ -46,15 +46,9 @@ public class CommandParser {
             // Check if the current character is a newline (command terminator)
             if (b == '\n') {
                 String fullCommand = commandLine.toString().trim();
-                buffer.mark();
-                // Reset the buffer to the marked position
-                buffer.reset();
-                // Skip the newline character
-                buffer.position(buffer.position());
-
                 if(buffer.limit()==buffer.position()){
                     buffer.clear();
-                    sessionState.flag=false;
+                    sessionState.setFlagRead(false);
                 }
 
                 return parse(fullCommand, clientChannel, sessionState);
