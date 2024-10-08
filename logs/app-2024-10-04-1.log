@@ -1,0 +1,188 @@
+2024-10-04 10:28:54.018 [main] INFO  net.ftp.FTPNioServer - Server is running on port 2121
+2024-10-04 10:29:18.720 [main] INFO  net.ftp.FTPNioServer - Client connected
+2024-10-04 10:29:36.890 [main] INFO  net.ftp.FTPNioServer - Server is running on port 2121
+2024-10-04 10:29:42.069 [main] INFO  net.ftp.FTPNioServer - Client connected
+2024-10-04 10:34:16.460 [main] WARN  net.ftp.FTPNioServer - Invalid command from client: 
+net.ftp.exceptions.InvalidCommandException: Invalid or unsupported command: HI
+	at net.ftp.CommandParser.createCommand(CommandParser.java:105)
+	at net.ftp.CommandParser.parse(CommandParser.java:91)
+	at net.ftp.CommandParser.readAndParseCommand(CommandParser.java:60)
+	at net.ftp.FTPNioServer.handleClientRequest(FTPNioServer.java:67)
+	at net.ftp.FTPNioServer.main(FTPNioServer.java:43)
+2024-10-04 10:34:26.587 [main] INFO  net.ftp.handler.StorCommandHandler - Starting file write. Size: 7
+2024-10-04 10:35:07.157 [main] INFO  net.ftp.handler.RetrCommandHandler - Starting file transfer: /home/asvanth/IdeaProjects/my-java-assignments/server_files/asv.txt
+2024-10-04 10:35:13.610 [main] INFO  net.ftp.handler.RetrCommandHandler - File transfer complete: /home/asvanth/IdeaProjects/my-java-assignments/server_files/asv.txt
+2024-10-04 10:36:32.275 [main] WARN  net.ftp.FTPNioServer - Invalid command from client: 
+net.ftp.exceptions.InvalidCommandException: Type some command, it cannot be empty.
+	at net.ftp.CommandParser.parse(CommandParser.java:75)
+	at net.ftp.CommandParser.readAndParseCommand(CommandParser.java:60)
+	at net.ftp.FTPNioServer.handleClientRequest(FTPNioServer.java:67)
+	at net.ftp.FTPNioServer.main(FTPNioServer.java:43)
+2024-10-04 10:37:11.463 [main] INFO  net.ftp.FTPNioServer - Server is running on port 2121
+2024-10-04 10:37:17.293 [main] INFO  net.ftp.FTPNioServer - Client connected
+2024-10-04 10:45:51.650 [main] WARN  net.ftp.FTPNioServer - Invalid command from client: 
+net.ftp.exceptions.InvalidCommandException: Type some command, it cannot be empty.
+	at net.ftp.CommandParser.parse(CommandParser.java:69)
+	at net.ftp.CommandParser.readAndParseCommand(CommandParser.java:54)
+	at net.ftp.FTPNioServer.handleClientRequest(FTPNioServer.java:67)
+	at net.ftp.FTPNioServer.main(FTPNioServer.java:43)
+2024-10-04 10:45:51.787 [main] WARN  net.ftp.FTPNioServer - Invalid command from client: 
+net.ftp.exceptions.InvalidCommandException: Type some command, it cannot be empty.
+	at net.ftp.CommandParser.parse(CommandParser.java:69)
+	at net.ftp.CommandParser.readAndParseCommand(CommandParser.java:54)
+	at net.ftp.FTPNioServer.handleClientRequest(FTPNioServer.java:67)
+	at net.ftp.FTPNioServer.main(FTPNioServer.java:43)
+2024-10-04 10:46:05.367 [main] WARN  net.ftp.FTPNioServer - Invalid command from client: 
+net.ftp.exceptions.InvalidCommandException: Type some command, it cannot be empty.
+	at net.ftp.CommandParser.parse(CommandParser.java:69)
+	at net.ftp.CommandParser.readAndParseCommand(CommandParser.java:54)
+	at net.ftp.FTPNioServer.handleClientRequest(FTPNioServer.java:67)
+	at net.ftp.FTPNioServer.main(FTPNioServer.java:43)
+2024-10-04 10:46:05.863 [main] WARN  net.ftp.FTPNioServer - Invalid command from client: 
+net.ftp.exceptions.InvalidCommandException: Type some command, it cannot be empty.
+	at net.ftp.CommandParser.parse(CommandParser.java:69)
+	at net.ftp.CommandParser.readAndParseCommand(CommandParser.java:54)
+	at net.ftp.FTPNioServer.handleClientRequest(FTPNioServer.java:67)
+	at net.ftp.FTPNioServer.main(FTPNioServer.java:43)
+2024-10-04 10:46:06.207 [main] WARN  net.ftp.FTPNioServer - Invalid command from client: 
+net.ftp.exceptions.InvalidCommandException: Type some command, it cannot be empty.
+	at net.ftp.CommandParser.parse(CommandParser.java:69)
+	at net.ftp.CommandParser.readAndParseCommand(CommandParser.java:54)
+	at net.ftp.FTPNioServer.handleClientRequest(FTPNioServer.java:67)
+	at net.ftp.FTPNioServer.main(FTPNioServer.java:43)
+2024-10-04 10:46:06.479 [main] WARN  net.ftp.FTPNioServer - Invalid command from client: 
+net.ftp.exceptions.InvalidCommandException: Type some command, it cannot be empty.
+	at net.ftp.CommandParser.parse(CommandParser.java:69)
+	at net.ftp.CommandParser.readAndParseCommand(CommandParser.java:54)
+	at net.ftp.FTPNioServer.handleClientRequest(FTPNioServer.java:67)
+	at net.ftp.FTPNioServer.main(FTPNioServer.java:43)
+2024-10-04 10:46:06.711 [main] WARN  net.ftp.FTPNioServer - Invalid command from client: 
+net.ftp.exceptions.InvalidCommandException: Type some command, it cannot be empty.
+	at net.ftp.CommandParser.parse(CommandParser.java:69)
+	at net.ftp.CommandParser.readAndParseCommand(CommandParser.java:54)
+	at net.ftp.FTPNioServer.handleClientRequest(FTPNioServer.java:67)
+	at net.ftp.FTPNioServer.main(FTPNioServer.java:43)
+2024-10-04 10:46:06.951 [main] WARN  net.ftp.FTPNioServer - Invalid command from client: 
+net.ftp.exceptions.InvalidCommandException: Type some command, it cannot be empty.
+	at net.ftp.CommandParser.parse(CommandParser.java:69)
+	at net.ftp.CommandParser.readAndParseCommand(CommandParser.java:54)
+	at net.ftp.FTPNioServer.handleClientRequest(FTPNioServer.java:67)
+	at net.ftp.FTPNioServer.main(FTPNioServer.java:43)
+2024-10-04 10:46:07.167 [main] WARN  net.ftp.FTPNioServer - Invalid command from client: 
+net.ftp.exceptions.InvalidCommandException: Type some command, it cannot be empty.
+	at net.ftp.CommandParser.parse(CommandParser.java:69)
+	at net.ftp.CommandParser.readAndParseCommand(CommandParser.java:54)
+	at net.ftp.FTPNioServer.handleClientRequest(FTPNioServer.java:67)
+	at net.ftp.FTPNioServer.main(FTPNioServer.java:43)
+2024-10-04 10:46:07.383 [main] WARN  net.ftp.FTPNioServer - Invalid command from client: 
+net.ftp.exceptions.InvalidCommandException: Type some command, it cannot be empty.
+	at net.ftp.CommandParser.parse(CommandParser.java:69)
+	at net.ftp.CommandParser.readAndParseCommand(CommandParser.java:54)
+	at net.ftp.FTPNioServer.handleClientRequest(FTPNioServer.java:67)
+	at net.ftp.FTPNioServer.main(FTPNioServer.java:43)
+2024-10-04 10:46:07.807 [main] WARN  net.ftp.FTPNioServer - Invalid command from client: 
+net.ftp.exceptions.InvalidCommandException: Type some command, it cannot be empty.
+	at net.ftp.CommandParser.parse(CommandParser.java:69)
+	at net.ftp.CommandParser.readAndParseCommand(CommandParser.java:54)
+	at net.ftp.FTPNioServer.handleClientRequest(FTPNioServer.java:67)
+	at net.ftp.FTPNioServer.main(FTPNioServer.java:43)
+2024-10-04 10:46:08.031 [main] WARN  net.ftp.FTPNioServer - Invalid command from client: 
+net.ftp.exceptions.InvalidCommandException: Type some command, it cannot be empty.
+	at net.ftp.CommandParser.parse(CommandParser.java:69)
+	at net.ftp.CommandParser.readAndParseCommand(CommandParser.java:54)
+	at net.ftp.FTPNioServer.handleClientRequest(FTPNioServer.java:67)
+	at net.ftp.FTPNioServer.main(FTPNioServer.java:43)
+2024-10-04 10:46:08.215 [main] WARN  net.ftp.FTPNioServer - Invalid command from client: 
+net.ftp.exceptions.InvalidCommandException: Type some command, it cannot be empty.
+	at net.ftp.CommandParser.parse(CommandParser.java:69)
+	at net.ftp.CommandParser.readAndParseCommand(CommandParser.java:54)
+	at net.ftp.FTPNioServer.handleClientRequest(FTPNioServer.java:67)
+	at net.ftp.FTPNioServer.main(FTPNioServer.java:43)
+2024-10-04 10:46:16.344 [main] WARN  net.ftp.FTPNioServer - Invalid command from client: 
+net.ftp.exceptions.InvalidCommandException: Invalid or unsupported command: HI
+	at net.ftp.CommandParser.createCommand(CommandParser.java:99)
+	at net.ftp.CommandParser.parse(CommandParser.java:85)
+	at net.ftp.CommandParser.readAndParseCommand(CommandParser.java:54)
+	at net.ftp.FTPNioServer.handleClientRequest(FTPNioServer.java:67)
+	at net.ftp.FTPNioServer.main(FTPNioServer.java:43)
+2024-10-04 10:46:18.951 [main] WARN  net.ftp.FTPNioServer - Invalid command from client: 
+net.ftp.exceptions.InvalidCommandException: Invalid or unsupported command: BYE
+	at net.ftp.CommandParser.createCommand(CommandParser.java:99)
+	at net.ftp.CommandParser.parse(CommandParser.java:85)
+	at net.ftp.CommandParser.readAndParseCommand(CommandParser.java:54)
+	at net.ftp.FTPNioServer.handleClientRequest(FTPNioServer.java:67)
+	at net.ftp.FTPNioServer.main(FTPNioServer.java:43)
+2024-10-04 10:46:25.055 [main] WARN  net.ftp.FTPNioServer - Invalid command from client: 
+net.ftp.exceptions.InvalidCommandException: Invalid or unsupported command: HELLO
+	at net.ftp.CommandParser.createCommand(CommandParser.java:99)
+	at net.ftp.CommandParser.parse(CommandParser.java:85)
+	at net.ftp.CommandParser.readAndParseCommand(CommandParser.java:54)
+	at net.ftp.FTPNioServer.handleClientRequest(FTPNioServer.java:67)
+	at net.ftp.FTPNioServer.main(FTPNioServer.java:43)
+2024-10-04 13:01:42.854 [main] INFO  net.ftp.FTPNioServer - Server is running on port 2121
+2024-10-04 13:02:02.953 [main] INFO  net.ftp.FTPNioServer - Client connected
+2024-10-04 13:02:19.645 [main] INFO  net.ftp.handler.StorCommandHandler - Starting file write. Size: 1
+2024-10-04 13:04:18.646 [main] INFO  net.ftp.CommandParser - Client closed connection.
+2024-10-04 13:04:18.646 [main] INFO  net.ftp.FTPNioServer - Client requested connection termination.
+2024-10-04 13:04:18.648 [main] INFO  net.ftp.FTPNioServer - Closed client connection.
+2024-10-04 13:04:31.156 [main] INFO  net.ftp.FTPNioServer - Server is running on port 2121
+2024-10-04 13:04:45.443 [main] INFO  net.ftp.FTPNioServer - Client connected
+2024-10-04 13:05:11.790 [main] INFO  net.ftp.handler.StorCommandHandler - Starting file write. Size: 1
+2024-10-04 13:10:06.646 [main] INFO  net.ftp.FTPNioServer - Server is running on port 2121
+2024-10-04 13:10:08.083 [main] INFO  net.ftp.FTPNioServer - Client connected
+2024-10-04 13:10:14.853 [main] INFO  net.ftp.handler.StorCommandHandler - Starting file write. Size: 1
+2024-10-04 13:10:33.124 [main] INFO  net.ftp.handler.StorCommandHandler - Starting file write. Size: 1
+2024-10-04 13:10:33.126 [main] ERROR net.ftp.CommandParser - Invalid size format: transfer
+2024-10-04 13:10:33.127 [main] WARN  net.ftp.FTPNioServer - Invalid command from client: 
+net.ftp.exceptions.InvalidCommandException: Invalid or unsupported command: 200
+	at net.ftp.CommandParser.createCommand(CommandParser.java:99)
+	at net.ftp.CommandParser.parse(CommandParser.java:85)
+	at net.ftp.CommandParser.readAndParseCommand(CommandParser.java:54)
+	at net.ftp.FTPNioServer.handleClientRequest(FTPNioServer.java:67)
+	at net.ftp.FTPNioServer.main(FTPNioServer.java:43)
+2024-10-04 15:07:31.542 [main] INFO  net.ftp.FtpServer - Server is running on port 2121
+2024-10-04 15:07:38.592 [main] INFO  net.ftp.FtpServer - Client connected
+2024-10-04 15:07:54.489 [Thread-0] INFO  net.ftp.handler.StorCommandHandler - Starting file write. Size: 10
+2024-10-04 15:08:30.190 [main] INFO  net.ftp.FtpServer - Client connected
+2024-10-04 15:09:11.101 [main] INFO  net.ftp.FTPNioServer - Server is running on port 2121
+2024-10-04 15:09:18.132 [main] INFO  net.ftp.FTPNioServer - Client connected
+2024-10-04 15:09:26.718 [main] INFO  net.ftp.handler.StorCommandHandler - Starting file write. Size: -1
+2024-10-04 15:09:26.719 [main] ERROR net.ftp.handler.StorCommandHandler - File storage error: Incomplete file transfer. Expected: -1 bytes, but wrote: 0
+net.ftp.exceptions.FileStorageException: Incomplete file transfer. Expected: -1 bytes, but wrote: 0
+	at net.ftp.handler.StorCommandHandler.writeFile(StorCommandHandler.java:124)
+	at net.ftp.handler.StorCommandHandler.handle(StorCommandHandler.java:51)
+	at net.ftp.FTPNioServer.handleClientRequest(FTPNioServer.java:75)
+	at net.ftp.FTPNioServer.main(FTPNioServer.java:43)
+2024-10-04 15:09:32.654 [main] INFO  net.ftp.handler.StorCommandHandler - Starting file write. Size: 10
+2024-10-04 15:10:22.972 [main] WARN  net.ftp.FTPNioServer - Invalid command from client: 
+net.ftp.exceptions.InvalidCommandException: Type some command, it cannot be empty.
+	at net.ftp.CommandParser.parse(CommandParser.java:69)
+	at net.ftp.CommandParser.readAndParseCommand(CommandParser.java:54)
+	at net.ftp.FTPNioServer.handleClientRequest(FTPNioServer.java:67)
+	at net.ftp.FTPNioServer.main(FTPNioServer.java:43)
+2024-10-04 15:10:22.973 [main] INFO  net.ftp.FTPNioServer - Client connected
+                                                                                           2024-10-04 16:03:16.877 [main] INFO  net.ftp.FtpServer - Server is running on port 2121
+2024-10-04 16:03:28.472 [main] INFO  net.ftp.FTPNioServer - Server is running on port 2121
+2024-10-04 16:03:37.997 [main] INFO  net.ftp.FTPNioServer - Client connected
+2024-10-04 16:03:46.109 [main] INFO  net.ftp.handler.StorCommandHandler - Starting file write. Size: 1
+2024-10-04 16:04:11.221 [main] WARN  net.ftp.FTPNioServer - Invalid command from client: 
+net.ftp.exceptions.InvalidCommandException: Type some command, it cannot be empty.
+	at net.ftp.CommandParser.parse(CommandParser.java:69)
+	at net.ftp.CommandParser.readAndParseCommand(CommandParser.java:54)
+	at net.ftp.FTPNioServer.handleClientRequest(FTPNioServer.java:67)
+	at net.ftp.FTPNioServer.main(FTPNioServer.java:43)
+2024-10-04 16:04:11.221 [main] INFO  net.ftp.FTPNioServer - Client connected
+2024-10-04 16:04:20.059 [main] INFO  net.ftp.handler.RetrCommandHandler - Starting file transfer: /home/asvanth/IdeaProjects/my-java-assignments/server_files/1
+2024-10-04 16:04:20.059 [main] INFO  net.ftp.handler.RetrCommandHandler - File transfer complete: /home/asvanth/IdeaProjects/my-java-assignments/server_files/1
+2024-10-04 16:05:29.324 [main] INFO  net.ftp.FTPNioServer - Client connected
+2024-10-04 16:05:44.408 [main] INFO  net.ftp.FTPNioServer - Client connected
+2024-10-04 16:06:51.014 [main] INFO  net.ftp.handler.RetrCommandHandler - Starting file transfer: /home/asvanth/IdeaProjects/my-java-assignments/server_files/1
+2024-10-04 16:06:51.015 [main] INFO  net.ftp.handler.RetrCommandHandler - File transfer complete: /home/asvanth/IdeaProjects/my-java-assignments/server_files/1
+2024-10-04 16:06:56.229 [main] INFO  net.ftp.handler.RetrCommandHandler - Starting file transfer: /home/asvanth/IdeaProjects/my-java-assignments/server_files/1
+2024-10-04 16:06:56.230 [main] INFO  net.ftp.handler.RetrCommandHandler - File transfer complete: /home/asvanth/IdeaProjects/my-java-assignments/server_files/1
+2024-10-04 16:07:04.339 [main] INFO  net.ftp.CommandParser - Client closed connection.
+2024-10-04 16:07:04.339 [main] INFO  net.ftp.FTPNioServer - Client requested connection termination.
+2024-10-04 16:07:04.340 [main] INFO  net.ftp.FTPNioServer - Closed client connection.
+2024-10-04 16:07:07.072 [main] INFO  net.ftp.CommandParser - Client closed connection.
+2024-10-04 16:07:07.072 [main] INFO  net.ftp.FTPNioServer - Client requested connection termination.
+2024-10-04 16:07:07.073 [main] INFO  net.ftp.FTPNioServer - Closed client connection.
