@@ -2,11 +2,8 @@ package net.ftp;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
-import java.nio.ByteBuffer;
 import java.nio.channels.*;
 import java.util.Iterator;
-import net.ftp.exceptions.InvalidCommandException;
-import net.ftp.handler.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
