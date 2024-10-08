@@ -27,6 +27,18 @@ public class ClientConnection implements Runnable {
 
         try {
             while (isConnectionActive) {
+                if (sessionState.isBufferReadyForReading()) {
+                    sessionState.bytesRead = clientChannel.read(buffer);
+                    if (sessionState.isWritingFile()) {
+                        sessionState.sch.handle();
+                    }
+                    if (sessionState.bytesRead == -1) {
+                        LOGGER.info("Client closed connection.");
+                    }
+                    if (sessionState.bytesRead > 0) {
+                        buffer.flip();
+                    }
+                }
                 try {
                     Command cmd = CommandParser.getInstance().readAndParseCommand(buffer, clientChannel, sessionState);
 

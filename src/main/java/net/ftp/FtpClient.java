@@ -7,7 +7,7 @@ import java.util.concurrent.TimeUnit;
 public class FtpClient {
     private static final String SERVER = "localhost"; // Change to server address if needed
     private static final int PORT = 2121;
-    private static final int DELAY_MS = 2000; // Delay between each character (500 ms)
+    private static final int DELAY_MS = 10; // Delay between each character (500 ms)
 
     public static void main(String[] args) {
         try (Socket socket = new Socket(SERVER, PORT)) {
@@ -15,7 +15,8 @@ public class FtpClient {
             BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 
             // Send commands with delay, simulating fragmented commands
-            sendCommandWithDelay("LIST", out);
+            sendCommandWithDelay("stor 1.txt 1025\n" +
+                    "fgkfdmfklmdgnfdjgjkfdgjdfjkgkdfgfgkfdmfklmdgnfdjgjkfdgjdfjkgkdfgfgkfdmfklmdgnfdjgjkfdgjdfjkgkdfgfgkfdmfklmdgnfdjgjkfdgjdfjkgkdfgfgkfdmfklmdgnfdjgjkfdgjdfjkgkdfgfgkfdmfklmdgnfdjgjkfdgjdfjkgkdfgfgkfdmfklmdgnfdjgjkfdgjdfjkgkdfgfgkfdmfklmdgnfdjgjkfdgjdfjkgkdfgfgkfdmfklmdgnfdjgjkfdgjdfjkgkdfgfgkfdmfklmdgnfdjgjkfdgjdfjkgkdfgfgkfdmfklmdgnfdjgjkfdgjdfjkgkdfgfgkfdmfklmdgnfdjgjkfdgjdfjkgkdfgfgkfdmfklmdgnfdjgjkfdgjdfjkgkdfgfgkfdmfklmdgnfdjgjkfdgjdfjkgkdfgfgkfdmfklmdgnfdjgjkfdgjdfjkgkdfgfgkfdmfklmdgnfdjgjkfdgjdfjkgkdfgfgkfdmfklmdgnfdjgjkfdgjdfjkgkdfgfgkfdmfklmdgnfdjgjkfdgjdfjkgkdfgfgkfdmfklmdgnfdjgjkfdgjdfjkgkdfgfgkfdmfklmdgnfdjgjkfdgjdfjkgkdfgfgkfdmfklmdgnfdjgjkfdgjdfjkgkdfgfgkfdmfklmdgnfdjgjkfdgjdfjkgkdfgfgkfdmfklmdgnfdjgjkfdgjdfjkgkdfgfgkfdmfklmdgnfdjgjkfdgjdfjkgkdfgfgkfdmfklmdgnfdjgjkfdgjdfjkgkdfgfgkfdmfklmdgnfdjgjkfdgjdfjkgkdfgfgkfdmfklmdgnfdjgjkfdgjdfjkgkdfgfgkfdmfklmdgnfdjgjkfdgjdfjkgkdfgfgkfdmfklmdgnfdjgjkfdgjdfjkgkdfgfgkfdmfklmdgnfdjgjkfdgjdfjkgkdfgfgkfdmfklmdgnfdjgjkfdgjdfjkgkdfgfgkfdgjdfjkgkdfgfgkfdgj123dfjkgkd\nLIST", out);
 
             // Receive and print the response from the server
             String response;

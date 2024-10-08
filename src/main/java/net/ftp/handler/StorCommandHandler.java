@@ -18,14 +18,12 @@ public class StorCommandHandler implements Command {
 
     private static final int BUFFER_SIZE = 1024;
     private final String fileName;
-    private final SocketChannel clientChannel; // Changed to SocketChannel
     private final int size;
     private final SessionState sessionState;
-    private ByteBuffer buffer1= ByteBuffer.allocate(1024);//for common writing
+    int bytesWritten = 0;
 
-    public StorCommandHandler(String fileName, SocketChannel clientChannel, int size, SessionState sessionState) {
+    public StorCommandHandler(String fileName, int size, SessionState sessionState) {
         this.fileName = fileName;
-        this.clientChannel = clientChannel; // Initialize SocketChannel
         this.size = size;
         this.sessionState = sessionState;
     }
@@ -48,8 +46,13 @@ public class StorCommandHandler implements Command {
 
         // Try writing the file, catching specific errors like FileNotFoundException and IOException
         try {
+            if(!sessionState.isWritingFile()) sessionState.setStore(this);
+
             writeFile(file);
-            return GREEN + "200 File transfer complete.\r\n" + RESET;
+
+            if(sessionState.isWritingFile()) return "";
+            else return GREEN + "200 File transfer complete.\r\n" + RESET;
+
         } catch (FileStorageException e) {
             LOGGER.error("File storage error: {}", e.getMessage(), e);
             return RED + "550 " + e.getMessage() + "\r\n" + RESET;
@@ -65,65 +68,63 @@ public class StorCommandHandler implements Command {
     }
 
     private void writeFile(File file) throws FileStorageException {
-        try (BufferedOutputStream fileOutput = new BufferedOutputStream(new FileOutputStream(file))) {
+        try (FileOutputStream fileOutput = new FileOutputStream(file, true)) {
             ByteBuffer buffer = sessionState.getBuffer(); // Use ByteBuffer
-            long bytesWritten = 0;
+
 
             LOGGER.info("Starting file write. Size: {}", size);
 
-            while (bytesWritten < size) {
-                if (buffer.hasRemaining() && (buffer.limit()-buffer.position())>size && (buffer.position()!=0)){
-                    int bytesToWrite = Math.min(buffer.remaining(), (int) (size - bytesWritten));
+           /* while (bytesWritten < size) {
+
+                //break for new reading
+                if (sessionState.isBufferReadyForReading()) {
+                    sessionState.setWritingFile(true);
+                    break;
+                }
+
+                if (sessionState.checkBuffer()) {
+                    int bytesToWrite = Math.min(buffer.remaining(), (size - bytesWritten));
                     byte[] subsetArray = new byte[bytesToWrite];
-                    buffer.get(subsetArray, 0, size);
-                    buffer1=ByteBuffer.wrap(subsetArray);
-                    buffer.mark();
-                    // Reset the buffer to the marked position
-                    buffer.reset();
-                    // Skip the newline character
-                    buffer.position(buffer.position());
-                    if(buffer.limit()==buffer.position()){
-                        buffer.clear();
-                    }
-                }
-
-                if(buffer.hasRemaining() && (buffer.limit()-buffer.position())<size){
-                    buffer1=ByteBuffer.allocate(buffer.remaining());
-                    buffer.clear();
-                }
-
-                if(buffer.position()==0) {
-                    int bytesRead = clientChannel.read(buffer1); // Read from SocketChannel
-                    buffer1.flip(); // Prepare buffer for writing
-                    if (bytesRead == -1) {
-                        throw new FileStorageException("Client closed connection during transfer.", null);
-                    }
-                }
-
-                // Write to the file from the buffer
-                while (buffer1.hasRemaining() && bytesWritten < size) {
-                    fileOutput.write(buffer1.get());
-                    bytesWritten++;
-                    LOGGER.debug("Written {} bytes so far.", bytesWritten);
-                }
-                boolean flag=false;
-                while(buffer1.hasRemaining()) {
-                     // Prepare buffer for reading from the beginning
-                    byte b=buffer1.get();
-                    buffer.put(b);
-                    flag=true;
-
-                }
-                if(flag){
+                    buffer.get(subsetArray, 0, bytesToWrite);
+                    fileOutput.write(subsetArray); // Append the new data
+                    bytesWritten += bytesToWrite;
+                    buffer.compact();
                     buffer.flip();
-                    sessionState.setFlagRead(true);
                 }
-                buffer1.clear(); // Clear buffer for next read
+                else if (sessionState.check1Buffer()) {
+                    byte[] subsetArray = new byte[buffer.limit()];
+                    buffer.get(subsetArray, 0, buffer.limit());
+                    fileOutput.write(subsetArray);// Append the new data
+                    bytesWritten += buffer.limit();
+                    buffer.clear();
+                    sessionState.setFlagRead(false);
+                }
+
+
+
+            }*/
+
+            int bytesToWrite = Math.min(buffer.remaining(), (size - bytesWritten));
+            if ( buffer.remaining()>0 && !sessionState.isBufferReadyForReading() ) {
+                fileOutput.write(buffer.array(),buffer.position(),bytesToWrite);
+                bytesWritten += bytesToWrite;
             }
+            if (bytesWritten < size) {
+                sessionState.setWritingFile(true);
+                sessionState.setFlagRead(false);
+                buffer.clear();
+            }
+
+            else{
+                buffer.position(bytesToWrite);
+                sessionState.setWritingFile(false);
+            }
+            buffer.compact().flip();
 
             if (bytesWritten != size) {
-                throw new FileStorageException("Incomplete file transfer. Expected: " + size + " bytes, but wrote: " + bytesWritten, null);
+                throw new FileStorageException("File transfer Pending.. Expected: " + size + " bytes, as of now wrote: " + bytesWritten, null);
             }
+
 
         } catch (FileNotFoundException e) {
             throw new FileStorageException("File not found or cannot be created: " + file.getAbsolutePath(), e);
@@ -131,6 +132,8 @@ public class StorCommandHandler implements Command {
             throw new FileStorageException("Error during file storing for file: " + file.getAbsolutePath(), e);
         }
     }
+
+
 
     public String getFileName() {
         return fileName;
@@ -140,11 +143,4 @@ public class StorCommandHandler implements Command {
         return size;
     }
 
-    public ByteBuffer getBuffer1() {
-        return buffer1;
-    }
-
-    public void setBuffer1(ByteBuffer buffer1) {
-        this.buffer1 = buffer1;
-    }
 }

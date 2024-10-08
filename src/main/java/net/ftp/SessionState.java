@@ -1,5 +1,7 @@
 package net.ftp;
 
+import net.ftp.handler.StorCommandHandler;
+
 import java.nio.ByteBuffer;
 
 public class SessionState {
@@ -8,10 +10,17 @@ public class SessionState {
     private final ByteBuffer buffer;
     private boolean flagRead=true;
     private boolean isWritingFile = false;
+    protected int bytesRead=0;
+    StringBuilder commandLine = new StringBuilder();;
+    StorCommandHandler sch;
 
     public SessionState() {
         this.currentDirectory = "/home/asvanth/IdeaProjects/my-java-assignments/server_files";
         this.buffer = ByteBuffer.allocate(1024); // Allocate once for the session
+    }
+
+    public void setStore(StorCommandHandler sch){
+        this.sch=sch;
     }
 
     public boolean flagRead() {
@@ -22,12 +31,17 @@ public class SessionState {
         this.flagRead = flagRead;
     }
 
+
     public boolean isWritingFile() {
         return isWritingFile;
     }
 
     public void setWritingFile(boolean writingFile) {
         isWritingFile = writingFile;
+    }
+
+    public boolean isBufferReadyForReading() {
+        return buffer.position() == 0 && buffer.limit() == buffer.capacity();
     }
 
     public String getCurrentDirectory() {

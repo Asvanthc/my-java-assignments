@@ -15,7 +15,6 @@ public class CommandParser {
     private static final CommandParser INSTANCE = new CommandParser();
     private static final Logger LOGGER = LogManager.getLogger(CommandParser.class);
     private static final int BUFFER_SIZE = 1024;
-    int bytesRead=0;
 
     private CommandParser() {
     }
@@ -24,44 +23,43 @@ public class CommandParser {
         return INSTANCE;
     }
 
-    public Command readAndParseCommand(ByteBuffer buffer, SocketChannel clientChannel, SessionState sessionState) throws IOException, InvalidCommandException {
-        StringBuilder commandLine = new StringBuilder();
+    public Command readAndParseCommand(ByteBuffer buffer, SocketChannel clientChannel, SessionState sessionState)
+            throws IOException, InvalidCommandException {
 
-        if(buffer.position()==0 && buffer.limit()==buffer.capacity()) {
-            bytesRead = clientChannel.read(buffer);
 
-            if (bytesRead == -1) {
-                LOGGER.info("Client closed connection.");
-            }
-
-            buffer.flip();
-        }
-
-//        buffer.mark();  // Mark the current position of the buffer
-
-        while (buffer.hasRemaining() && bytesRead>0) {
+        while (buffer.remaining()>0) {
             byte b = buffer.get();
-            commandLine.append((char) b);
+            sessionState.commandLine.append((char) b);
 
             // Check if the current character is a newline (command terminator)
             if (b == '\n') {
-                String fullCommand = commandLine.toString().trim();
-                if(buffer.limit()==buffer.position()){
+                String fullCommand = sessionState.commandLine.toString().trim();
+                sessionState.commandLine=new StringBuilder();
+                if(buffer.limit() == buffer.position()){
                     buffer.clear();
                     sessionState.setFlagRead(false);
                 }
-
+                buffer.compact().flip();
                 return parse(fullCommand, clientChannel, sessionState);
             }
 
-            if (commandLine.length() >= BUFFER_SIZE) {
+            if (sessionState.commandLine.length() >= BUFFER_SIZE) {
                 LOGGER.warn("Command exceeded buffer size.");
                 throw new InvalidCommandException("Command too long.");
             }
         }
+        buffer.compact().flip();
+        if(buffer.limit() == buffer.position()){
+            buffer.clear();
+            sessionState.setFlagRead(false);
+        }
 
-        // If we reach here, it means the client has closed the connection or the buffer is incomplete
-        return null;
+        return new Command() {
+            @Override
+            public String handle() {
+                return "";
+            }
+        };
     }
 
     public Command parse(String commandLine, SocketChannel clientChannel, SessionState sessionState) throws InvalidCommandException {
@@ -93,7 +91,7 @@ public class CommandParser {
             case "CWD" -> new CwdCommandHandler(argument, sessionState);
             case "MKD" -> new MkdCommandHandler(argument);
             case "RMD" -> new RmdCommandHandler(argument);
-            case "STOR" -> new StorCommandHandler(argument, clientChannel, size, sessionState);
+            case "STOR" -> new StorCommandHandler(argument, size, sessionState);
             case "RETR" -> new RetrCommandHandler(argument, clientChannel, sessionState);
             case "QUIT" -> new QuitCommandHandler();
             default -> throw new InvalidCommandException("Invalid or unsupported command: " + command);

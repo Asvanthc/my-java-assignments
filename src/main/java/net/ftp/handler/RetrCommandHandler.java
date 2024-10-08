@@ -63,7 +63,7 @@ public class RetrCommandHandler implements Command {
                     while (buffer.hasRemaining()) {
                         clientChannel.write(buffer); // Write to the SocketChannel
                     }
-                    buffer.clear(); // Clear the buffer for the next read
+//                    buffer.clear(); // Clear the buffer for the next read
                 }
 
                 LOGGER.info("File transfer complete: {}", file.getAbsolutePath());

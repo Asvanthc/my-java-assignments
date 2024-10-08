@@ -30,7 +30,7 @@ public class CommandParserTest {
     @Test
     public void testValidPassCommand() throws Exception {
         String inputCommand = "PASS password123\n";
-        parser.bytesRead=inputCommand.length();
+        mockSessionState.bytesRead=inputCommand.length();
         buffer.put(inputCommand.getBytes());
         buffer.flip();  // Prepare buffer for reading
 
@@ -41,7 +41,7 @@ public class CommandParserTest {
     @Test
     public void testValidListCommand() throws Exception {
         String inputCommand = "LIST\n";
-        parser.bytesRead=inputCommand.length();
+        mockSessionState.bytesRead=inputCommand.length();
         buffer.put(inputCommand.getBytes());
         buffer.flip();
 
@@ -52,7 +52,7 @@ public class CommandParserTest {
     @Test
     public void testValidPwdCommand() throws Exception {
         String inputCommand = "PWD\n";
-        parser.bytesRead=inputCommand.length();
+        mockSessionState.bytesRead=inputCommand.length();
         buffer.put(inputCommand.getBytes());
         buffer.flip();
 
@@ -63,7 +63,7 @@ public class CommandParserTest {
     @Test
     public void testValidCwdCommand() throws Exception {
         String inputCommand = "CWD /new/directory\n";
-        parser.bytesRead=inputCommand.length();
+        mockSessionState.bytesRead=inputCommand.length();
         buffer.put(inputCommand.getBytes());
         buffer.flip();
 
@@ -74,7 +74,7 @@ public class CommandParserTest {
     @Test
     public void testValidMkdCommand() throws Exception {
         String inputCommand = "MKD /new/folder\n";
-        parser.bytesRead=inputCommand.length();
+        mockSessionState.bytesRead=inputCommand.length();
         buffer.put(inputCommand.getBytes());
         buffer.flip();
 
@@ -85,7 +85,7 @@ public class CommandParserTest {
     @Test
     public void testValidRmdCommand() throws Exception {
         String inputCommand = "RMD /new/folder\n";
-        parser.bytesRead=inputCommand.length();
+        mockSessionState.bytesRead=inputCommand.length();
         buffer.put(inputCommand.getBytes());
         buffer.flip();
 
@@ -96,7 +96,7 @@ public class CommandParserTest {
     @Test
     public void testValidStorCommand() throws Exception {
         String inputCommand = "STOR filename.txt 1000\n";
-        parser.bytesRead=inputCommand.length();
+        mockSessionState.bytesRead=inputCommand.length();
         buffer.put(inputCommand.getBytes());
         buffer.flip();
 
@@ -107,7 +107,7 @@ public class CommandParserTest {
     @Test
     public void testValidRetrCommand() throws Exception {
         String inputCommand = "RETR filename.txt\n";
-        parser.bytesRead=inputCommand.length();
+        mockSessionState.bytesRead=inputCommand.length();
         buffer.put(inputCommand.getBytes());
         buffer.flip();
 
@@ -118,7 +118,7 @@ public class CommandParserTest {
     @Test
     public void testValidQuitCommand() throws Exception {
         String inputCommand = "QUIT\n";
-        parser.bytesRead=inputCommand.length();
+        mockSessionState.bytesRead=inputCommand.length();
         buffer.put(inputCommand.getBytes());
         buffer.flip();
 
@@ -129,7 +129,7 @@ public class CommandParserTest {
     @Test
     public void testInvalidCommand() {
         String inputCommand = "INVALID_CMD\n";
-        parser.bytesRead=inputCommand.length();
+        mockSessionState.bytesRead=inputCommand.length();
         buffer.put(inputCommand.getBytes());
         buffer.flip();
 
@@ -140,7 +140,7 @@ public class CommandParserTest {
     @Test
     public void testMultiLinePipedCommands() throws Exception {
         String inputCommand = "PASS password123\nLIST\n";
-        parser.bytesRead=inputCommand.length();
+        mockSessionState.bytesRead=inputCommand.length();
         buffer.put(inputCommand.getBytes());
         buffer.flip();
 
@@ -156,7 +156,7 @@ public class CommandParserTest {
     @Test
     public void testComplexMultiLinePipedCommands() throws Exception {
         String inputCommand = "LIST\nRETR sample3.txt\nPWD\nLIST\nSTOR sample2.txt 5\n12345PWD\nlist\nretr sample3.txt\n";
-        parser.bytesRead=inputCommand.length();
+        mockSessionState.bytesRead=inputCommand.length();
         buffer.put(inputCommand.getBytes());
         buffer.flip();
 
