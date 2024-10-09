@@ -13,6 +13,8 @@ public class ClientConnection implements Runnable {
     private static final Logger LOGGER = LogManager.getLogger(ClientConnection.class);
     private final SessionState sessionState;
     ByteBuffer buffer1= ByteBuffer.allocate(1024);//for common writing
+    String response;
+
 
     public ClientConnection(SocketChannel clientChannel) {
         this.clientChannel = clientChannel;
@@ -29,15 +31,16 @@ public class ClientConnection implements Runnable {
             while (isConnectionActive) {
                 if (sessionState.isBufferReadyForReading()) {
                     sessionState.bytesRead = clientChannel.read(buffer);
-                    if (sessionState.isWritingFile()) {
-                        sessionState.sch.handle();
+                    if (sessionState.bytesRead>0) {
+                        buffer.flip();
+                    }
+                    if(sessionState.isWritingFile()){
+                        response=sessionState.sch.handle();
                     }
                     if (sessionState.bytesRead == -1) {
                         LOGGER.info("Client closed connection.");
                     }
-                    if (sessionState.bytesRead > 0) {
-                        buffer.flip();
-                    }
+
                 }
                 try {
                     Command cmd = CommandParser.getInstance().readAndParseCommand(buffer, clientChannel, sessionState);

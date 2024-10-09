@@ -12,4 +12,5 @@ public class InvalidCommandException extends FtpCommandException {
     public InvalidCommandException(String message) {
         super(message, ERROR_CODE);
     }
+
 }

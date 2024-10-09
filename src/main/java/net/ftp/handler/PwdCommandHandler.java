@@ -1,6 +1,5 @@
 package net.ftp.handler;
 
-import java.nio.file.Paths;
 import net.ftp.SessionState;
 
 public class PwdCommandHandler implements Command {

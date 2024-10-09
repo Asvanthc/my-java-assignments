@@ -16,6 +16,7 @@ public class FtpServer {
             serverChannel.bind(new InetSocketAddress(PORT));
             LOGGER.info("Server is running on port " + PORT);
 
+            //noinspection InfiniteLoopStatement
             while (true) {
                 SocketChannel clientChannel = serverChannel.accept();
                 LOGGER.info("Client connected");

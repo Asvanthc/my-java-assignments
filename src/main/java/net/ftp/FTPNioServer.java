@@ -19,6 +19,7 @@ public class FTPNioServer {
             serverChannel.register(selector, SelectionKey.OP_ACCEPT);
             LOGGER.info("Server is running on port " + PORT);
 
+            //noinspection InfiniteLoopStatement
             while (true) {
                 selector.select();
                 Iterator<SelectionKey> keyIterator = selector.selectedKeys().iterator();
@@ -33,10 +34,9 @@ public class FTPNioServer {
                         SelectionKey clientKey = clientChannel.register(selector, SelectionKey.OP_READ);
                         clientKey.attach(new SessionState()); // Attach a new session state to the selection key
                         LOGGER.info("Client connected");
-                    } else if (key.isReadable()) {
+                    } else if (key.isReadable() ) {
                         SocketChannel clientChannel = (SocketChannel) key.channel();
                         SessionState sessionState = (SessionState) key.attachment();
-                        sessionState.setFlagRead(true);
                         ClientNio.handleClientRequest(clientChannel, sessionState);
                     }
                 }

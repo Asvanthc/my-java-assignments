@@ -1,0 +1,16 @@
+ Path path = Paths.get(fileName);
+        try (FileChannel fileChannel = FileChannel.open(path, StandardOpenOption.CREATE, StandardOpenOption.APPEND)) {
+            // Calculate the size to write
+            if (buffer.hasRemaining()) {
+                int size = (int) Math.min(buffer.remaining(), fileLen - totalBytes);
+                int initialLimit = buffer.limit();
+                // Write the buffer content to the file channel
+                buffer.limit(buffer.position() + size); // Adjust the buffer limit to control how much is written
+                fileChannel.write(buffer);              // Write the data from buffer
+                buffer.limit(initialLimit);                     // Compact the buffer if needed
+                totalBytes += size;
+                buffer.compact().flip(); //
+            }
+
+            if (totalBytes < fileLen) sessionState.putContinue(this);     // Continue if more data is needed
+            else sessionState.clear();           // Clear sessi

@@ -15,8 +15,7 @@ public class FtpClient {
             BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 
             // Send commands with delay, simulating fragmented commands
-            sendCommandWithDelay("stor 1.txt 1025\n" +
-                    "fgkfdmfklmdgnfdjgjkfdgjdfjkgkdfgfgkfdmfklmdgnfdjgjkfdgjdfjkgkdfgfgkfdmfklmdgnfdjgjkfdgjdfjkgkdfgfgkfdmfklmdgnfdjgjkfdgjdfjkgkdfgfgkfdmfklmdgnfdjgjkfdgjdfjkgkdfgfgkfdmfklmdgnfdjgjkfdgjdfjkgkdfgfgkfdmfklmdgnfdjgjkfdgjdfjkgkdfgfgkfdmfklmdgnfdjgjkfdgjdfjkgkdfgfgkfdmfklmdgnfdjgjkfdgjdfjkgkdfgfgkfdmfklmdgnfdjgjkfdgjdfjkgkdfgfgkfdmfklmdgnfdjgjkfdgjdfjkgkdfgfgkfdmfklmdgnfdjgjkfdgjdfjkgkdfgfgkfdmfklmdgnfdjgjkfdgjdfjkgkdfgfgkfdmfklmdgnfdjgjkfdgjdfjkgkdfgfgkfdmfklmdgnfdjgjkfdgjdfjkgkdfgfgkfdmfklmdgnfdjgjkfdgjdfjkgkdfgfgkfdmfklmdgnfdjgjkfdgjdfjkgkdfgfgkfdmfklmdgnfdjgjkfdgjdfjkgkdfgfgkfdmfklmdgnfdjgjkfdgjdfjkgkdfgfgkfdmfklmdgnfdjgjkfdgjdfjkgkdfgfgkfdmfklmdgnfdjgjkfdgjdfjkgkdfgfgkfdmfklmdgnfdjgjkfdgjdfjkgkdfgfgkfdmfklmdgnfdjgjkfdgjdfjkgkdfgfgkfdmfklmdgnfdjgjkfdgjdfjkgkdfgfgkfdmfklmdgnfdjgjkfdgjdfjkgkdfgfgkfdmfklmdgnfdjgjkfdgjdfjkgkdfgfgkfdmfklmdgnfdjgjkfdgjdfjkgkdfgfgkfdmfklmdgnfdjgjkfdgjdfjkgkdfgfgkfdmfklmdgnfdjgjkfdgjdfjkgkdfgfgkfdmfklmdgnfdjgjkfdgjdfjkgkdfgfgkfdmfklmdgnfdjgjkfdgjdfjkgkdfgfgkfdgjdfjkgkdfgfgkfdgj123dfjkgkd\nLIST", out);
+            sendCommandWithDelay(out);
 
             // Receive and print the response from the server
             String response;
@@ -30,12 +29,16 @@ public class FtpClient {
             }
 
         } catch (IOException e) {
+            //noinspection CallToPrintStackTrace
             e.printStackTrace();
         }
     }
 
-    private static void sendCommandWithDelay(String command, PrintWriter out) {
-        char[] commandChars = command.toCharArray();
+    private static void sendCommandWithDelay(PrintWriter out) {
+        char[] commandChars = """
+                stor 1.txt 1025
+                fgkfdmfklmdgnfdjgjkfdgjdfjkgkdfgfgkfdmfklmdgnfdjgjkfdgjdfjkgkdfgfgkfdmfklmdgnfdjgjkfdgjdfjkgkdfgfgkfdmfklmdgnfdjgjkfdgjdfjkgkdfgfgkfdmfklmdgnfdjgjkfdgjdfjkgkdfgfgkfdmfklmdgnfdjgjkfdgjdfjkgkdfgfgkfdmfklmdgnfdjgjkfdgjdfjkgkdfgfgkfdmfklmdgnfdjgjkfdgjdfjkgkdfgfgkfdmfklmdgnfdjgjkfdgjdfjkgkdfgfgkfdmfklmdgnfdjgjkfdgjdfjkgkdfgfgkfdmfklmdgnfdjgjkfdgjdfjkgkdfgfgkfdmfklmdgnfdjgjkfdgjdfjkgkdfgfgkfdmfklmdgnfdjgjkfdgjdfjkgkdfgfgkfdmfklmdgnfdjgjkfdgjdfjkgkdfgfgkfdmfklmdgnfdjgjkfdgjdfjkgkdfgfgkfdmfklmdgnfdjgjkfdgjdfjkgkdfgfgkfdmfklmdgnfdjgjkfdgjdfjkgkdfgfgkfdmfklmdgnfdjgjkfdgjdfjkgkdfgfgkfdmfklmdgnfdjgjkfdgjdfjkgkdfgfgkfdmfklmdgnfdjgjkfdgjdfjkgkdfgfgkfdmfklmdgnfdjgjkfdgjdfjkgkdfgfgkfdmfklmdgnfdjgjkfdgjdfjkgkdfgfgkfdmfklmdgnfdjgjkfdgjdfjkgkdfgfgkfdmfklmdgnfdjgjkfdgjdfjkgkdfgfgkfdmfklmdgnfdjgjkfdgjdfjkgkdfgfgkfdmfklmdgnfdjgjkfdgjdfjkgkdfgfgkfdmfklmdgnfdjgjkfdgjdfjkgkdfgfgkfdmfklmdgnfdjgjkfdgjdfjkgkdfgfgkfdmfklmdgnfdjgjkfdgjdfjkgkdfgfgkfdmfklmdgnfdjgjkfdgjdfjkgkdfgfgkfdmfklmdgnfdjgjkfdgjdfjkgkdfgfgkfdgjdfjkgkdfgfgkfdgj123dfjkgkd
+                LIST""".toCharArray();
         for (char ch : commandChars) {
             out.print(ch); // Send one character at a time
             out.flush();
@@ -44,6 +47,7 @@ public class FtpClient {
                 // Introduce a delay between each character
                 TimeUnit.MILLISECONDS.sleep(DELAY_MS);
             } catch (InterruptedException e) {
+                //noinspection CallToPrintStackTrace
                 e.printStackTrace();
             }
         }

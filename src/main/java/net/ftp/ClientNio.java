@@ -2,9 +2,11 @@ package net.ftp;
 
 import net.ftp.exceptions.InvalidCommandException;
 import net.ftp.handler.Command;
+import net.ftp.handler.ContinueNewRead;
 import net.ftp.handler.QuitCommandHandler;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
@@ -17,52 +19,42 @@ public class ClientNio {
     static void handleClientRequest(SocketChannel clientChannel, SessionState sessionState) {
         ByteBuffer buffer = sessionState.getBuffer();
         try {
+            if(buffer.limit()==buffer.position()) sessionState.getBuffer().clear();
 
-            while (buffer.hasRemaining() && sessionState.flagRead()) {
-
-                if (sessionState.isBufferReadyForReading()) {
-                    sessionState.bytesRead = clientChannel.read(buffer);
-                    if (sessionState.bytesRead>0) {
-                        buffer.flip();
-                    }
-                    if(sessionState.isWritingFile()){
-                        response=sessionState.sch.handle();
-                        responseBuffer = ByteBuffer.wrap(response.getBytes());
-                        clientChannel.write(responseBuffer);
-                    }
-                    if (sessionState.bytesRead == -1) {
-                        LOGGER.info("Client closed connection.");
-                    }
-
-                }
-
-                try {
-                    // Parse command from buffer
-                    if(sessionState.flagRead()) {
-                        Command cmd = CommandParser.getInstance().readAndParseCommand(buffer, clientChannel, sessionState);
-
-                        if (cmd instanceof QuitCommandHandler || cmd == null) {
-                            LOGGER.info("Client requested connection termination.");
-                            closeClientChannel(clientChannel);
-                            return;
-                        }
-                        // Handle the command
-                        response = cmd.handle();
-                        responseBuffer = ByteBuffer.wrap(response.getBytes());
-                        clientChannel.write(responseBuffer);
-                    }
-                } catch (InvalidCommandException e) {
-                    LOGGER.warn("Invalid command from client: ", e);
-                    sendErrorResponse(clientChannel, e.getErrorCode() + " " + e.getMessage() + "\r\n");
-                }
-
+            sessionState.bytesRead = clientChannel.read(sessionState.getBuffer());
+            if (sessionState.bytesRead>0) {
+                sessionState.getBuffer().flip();
             }
+
+            while (buffer.hasRemaining()) {
+                // Continue read and write file
+                if (sessionState.isWritingFile()) {
+                    response = sessionState.sch.handle();
+                } else {
+                    Command cmd = CommandParser.getInstance().readAndParseCommand(buffer, clientChannel, sessionState);
+                    if (cmd instanceof QuitCommandHandler) {
+                        LOGGER.info("Client requested connection termination.");
+                        closeClientChannel(clientChannel);
+                        return;
+                    }
+                    if(cmd instanceof ContinueNewRead) break;
+
+                    response = cmd.handle();
+                }
+
+                if (buffer.remaining() > 0 ) buffer.compact();
+                else buffer.compact().flip();
+                responseBuffer = ByteBuffer.wrap(response.getBytes());
+                clientChannel.write(responseBuffer);
+            }
+        } catch (InvalidCommandException e) {
+            LOGGER.warn("Invalid command from client: ", e);
+            sendErrorResponse(clientChannel, e.getErrorCode() + " " + e.getMessage() + "\r\n");
         } catch (IOException e) {
             LOGGER.error("IO Exception while handling client request: ", e);
             closeClientChannel(clientChannel);
         }
     }
-
 
 
     private static void sendErrorResponse(SocketChannel clientChannel, String message) {

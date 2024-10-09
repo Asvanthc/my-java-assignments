@@ -58,15 +58,12 @@ public class RetrCommandHandler implements Command {
                 LOGGER.info("Starting file transfer: {}", file.getAbsolutePath());
 
                 while ((bytesRead = fileInput.read(buffer.array())) != -1) {
-//                    buffer.limit(bytesRead); // Set limit to the number of bytes read
-//                    buffer.flip(); // Prepare buffer for writing
                     while (buffer.hasRemaining()) {
                         clientChannel.write(buffer); // Write to the SocketChannel
                     }
-//                    buffer.clear(); // Clear the buffer for the next read
                 }
 
-                LOGGER.info("File transfer complete: {}", file.getAbsolutePath());
+                LOGGER.info("File transfer complete: {}-{}", file.getAbsolutePath(), bytesRead);
             }
 
             return GREEN + "\n200 Transfer complete." + RESET + "\r\n";

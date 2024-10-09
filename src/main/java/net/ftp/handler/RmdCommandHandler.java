@@ -28,6 +28,7 @@ public class RmdCommandHandler implements Command {
 
         try {
             // Delete the directory and its contents
+            //noinspection resource,ResultOfMethodCallIgnored
             Files.walk(dir.toPath())
                     .sorted(Comparator.reverseOrder())
                     .map(Path::toFile)

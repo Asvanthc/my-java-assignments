@@ -6,7 +6,7 @@ import java.io.File;
 public class CwdCommandHandler implements Command {
 
     private final String directoryPath;
-    private SessionState sessionState;
+    private final SessionState sessionState;
     // Constructor to accept the directory path as an argument
     public CwdCommandHandler(String directoryPath, SessionState sessionState) {
         this.directoryPath = directoryPath;

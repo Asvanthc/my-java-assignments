@@ -1,3 +1,192 @@
 12345
 56
 3
+Instructions for PUT:
+t tes.txt
+test
+:::Q::q:::::::q:qlist
+list
+list
+Instructions for PUT:
+:q -> When the user types :q, the input reading stops, and the file content is saved.
+::q -> When the user types ::q, it is treated as a literal string :q and will be written to the file.
+For even number of : it treats as single string literal : So that for odd count the file content will be saved in server files.
+If odd number of : used before a literal other than q, it takes it until even count as mentioned above
+and the last occurrence will not be added in file.
+
+-> PWD:
+Input: PWD
+Output:
+100 "/path/to/current/directory/." is the current directory.
+100 -> status code  
+
+
+-> LIST:
+Input: LIST
+Output:
+150 Opening data connection for file list.
+Number of files in Server: 3
+testt1.txt
+testt2.txt
+testt3.txt
+226 Transfer complete.
+\n
+
+Status codes for LIST:
+150 Opening data connection for file list.
+226 Transfer complete.
+000 Empty Folder
+
+
+-> QUIT:
+Input: QUIT
+Output:
+221 Goodbye.
+
+
+
+
+
+
+List
+pwd
+list
+put tes.txt
+test
+:::Q::q:::q:q
+put test.txt
+test
+:::Q::q:::qlist
+list
+get tes.txt
+get tesabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefab0
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+a
+a
+a
+a
+a
+a
+a
+a
+a
+a
+a
+a
+a
+a
+
+cdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefaseCommand(bufferManager, clientChannel);
+                if (cmd != null) {
+                    cmd.execute(bufferManager, clientChannel);
+                } else {
+                    break;
+                }
+            } catch (InvalidCommandException e) {
+                LOG.error(e.getMessage());
+
+                String errorMessage = e.getMessage() + "\n";
+
+                ByteBuffer errorBuffer = ByteBuffer.wrap(errorMessage.getBytes());
+                clientChannel.write(errorBuffer);
+            } catch (IOException | RuntimeException e) {
+                LOG.error("Error executing command: {}", e.getMessage());
+                closeResources();
+                return;
+            }
+        }
+    }
+
+    private void closeResources() {
+        try {
+            BufferedOutputStream bos = bufferManager.getCurrentOutputStream();
+            if (bos != null) {
+                bos.flush();
+                bos.close();
+            }
+
+            if (clientChannel.isOpen()) {
+                clientChannel.c
+
+
+
+
+
+
+
+
+

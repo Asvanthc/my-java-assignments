@@ -15,6 +15,7 @@ public class CommandParser {
     private static final CommandParser INSTANCE = new CommandParser();
     private static final Logger LOGGER = LogManager.getLogger(CommandParser.class);
     private static final int BUFFER_SIZE = 1024;
+    private static int contentSize = 0;
 
     private CommandParser() {
     }
@@ -23,46 +24,43 @@ public class CommandParser {
         return INSTANCE;
     }
 
+    public int findCR(ByteBuffer buffer) {
+        int prevPosition = buffer.position();
+        while (buffer.remaining() > 0) {
+            byte b = buffer.get();
+            if (b == '\n') {
+                int crIndex=buffer.position();
+                buffer.position(prevPosition);
+                return crIndex;
+            }
+        }
+        buffer.position(prevPosition);
+        return 0;
+    }
+
+
     public Command readAndParseCommand(ByteBuffer buffer, SocketChannel clientChannel, SessionState sessionState)
             throws IOException, InvalidCommandException {
 
-
-        while (buffer.remaining()>0) {
-            byte b = buffer.get();
-            sessionState.commandLine.append((char) b);
-
-            // Check if the current character is a newline (command terminator)
-            if (b == '\n') {
-                String fullCommand = sessionState.commandLine.toString().trim();
-                sessionState.commandLine=new StringBuilder();
-                if(buffer.limit() == buffer.position()){
-                    buffer.clear();
-                    sessionState.setFlagRead(false);
-                }
-                buffer.compact().flip();
-                return parse(fullCommand, clientChannel, sessionState);
-            }
-
+        int crIndex = findCR(buffer) - 1;
+        if(crIndex>=0) {
+            byte[] bytes = new byte[crIndex];
+            buffer.get(bytes, 0, crIndex);
+            buffer.position(buffer.position() + 1);
+            String fullCommand = new String(bytes, StandardCharsets.UTF_8);
+            return parse(fullCommand, clientChannel, sessionState);
+        } else {
             if (sessionState.commandLine.length() >= BUFFER_SIZE) {
                 LOGGER.warn("Command exceeded buffer size.");
                 throw new InvalidCommandException("Command too long.");
             }
-        }
-        buffer.compact().flip();
-        if(buffer.limit() == buffer.position()){
-            buffer.clear();
-            sessionState.setFlagRead(false);
-        }
+            return new ContinueNewRead();
 
-        return new Command() {
-            @Override
-            public String handle() {
-                return "";
-            }
-        };
+        }
     }
 
-    public Command parse(String commandLine, SocketChannel clientChannel, SessionState sessionState) throws InvalidCommandException {
+    public Command parse(String commandLine, SocketChannel clientChannel, SessionState sessionState)
+            throws InvalidCommandException {
         if (commandLine == null || commandLine.trim().isEmpty()) {
             throw new InvalidCommandException("Type some command, it cannot be empty.");
         }
@@ -83,7 +81,8 @@ public class CommandParser {
         return createCommand(command, argument, size, clientChannel, sessionState);
     }
 
-    private Command createCommand(String command, String argument, int size, SocketChannel clientChannel, SessionState sessionState) throws InvalidCommandException {
+    private Command createCommand(String command, String argument, int size, SocketChannel clientChannel,
+                                  SessionState sessionState) throws InvalidCommandException {
         return switch (command) {
             case "PASS" -> new PassCommandHandler(argument);
             case "LIST" -> new ListCommandHandler(sessionState);
